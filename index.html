@@ -243,6 +243,37 @@
         `;
       });
     }
+    // Inside your loginForm submit event, right after validating:
+localStorage.setItem('simsUser', JSON.stringify({ role, identifier }));
+
+function logout() {
+  localStorage.removeItem('simsUser');
+  document.getElementById('dashboardSection').classList.add('hidden');
+  document.getElementById('dashboardSection').classList.remove('flex');
+  document.getElementById('loginSection').classList.remove('hidden');
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const savedUser = localStorage.getItem('simsUser');
+  if (savedUser) {
+    currentUser = JSON.parse(savedUser);
+    document.getElementById('loginSection').classList.add('hidden');
+    document.getElementById('dashboardSection').classList.remove('hidden');
+    document.getElementById('dashboardSection').classList.add('flex');
+
+    document.getElementById('sidebarRoleLabel').innerText = `Role: ${currentUser.role}`;
+    document.getElementById('userNameDisplay').innerText = currentUser.identifier;
+    document.getElementById('statActiveRole').innerText = currentUser.role;
+
+    if (currentUser.role === 'Student') {
+      document.getElementById('adminFormContainer').style.display = 'none';
+    } else {
+      document.getElementById('adminFormContainer').style.display = 'block';
+    }
+
+    loadProfiles();
+  }
+});
 
     function filterTable() {
       const query = document.getElementById('searchInput').value.toLowerCase();
