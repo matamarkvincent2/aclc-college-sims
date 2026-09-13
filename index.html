@@ -93,7 +93,7 @@
           </div>
         </div>
 
-        <!-- Add New Record Form -->
+        <!-- Add New Record Form (Visible to both Faculty and Admin) -->
         <div id="adminFormContainer" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
           <h3 class="font-bold text-gray-800 mb-4">Register / Add New Directory Record</h3>
           <form id="profileForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -104,6 +104,7 @@
             <div>
               <label class="block text-xs font-medium text-gray-600">Role</label>
               <select id="role" class="w-full mt-1 border rounded-lg p-2 text-sm">
+                <option value="Student">Student</option>
                 <option value="Faculty">Faculty</option>
                 <option value="Admin">Admin</option>
               </select>
@@ -114,7 +115,7 @@
             </div>
             <div>
               <label class="block text-xs font-medium text-gray-600">Details / Course / Dept</label>
-              <input type="text" id="details" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="BSIT - Dept">
+              <input type="text" id="details" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="BSIT - 3rd Year">
             </div>
             <div class="md:col-span-4 flex justify-end">
               <button type="submit" class="bg-blue-900 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">
@@ -173,12 +174,6 @@
       document.getElementById('userNameDisplay').innerText = currentUser.identifier;
       document.getElementById('statActiveRole').innerText = currentUser.role;
 
-      if (currentUser.role === 'Admin') {
-        document.getElementById('adminFormContainer').style.display = 'block';
-      } else {
-        document.getElementById('adminFormContainer').style.display = 'none';
-      }
-
       loadProfiles();
     } else {
       localStorage.removeItem('simsUser');
@@ -214,12 +209,6 @@
     document.getElementById('sidebarRoleLabel').innerText = `Role: ${role}`;
     document.getElementById('userNameDisplay').innerText = identifier;
     document.getElementById('statActiveRole').innerText = role;
-
-    if (role === 'Admin') {
-      document.getElementById('adminFormContainer').style.display = 'block';
-    } else {
-      document.getElementById('adminFormContainer').style.display = 'none';
-    }
 
     loadProfiles();
   });
@@ -259,7 +248,8 @@
           <td class="p-4 font-medium text-gray-800">${p.fullName}</td>
           <td class="p-4">
             <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${
-              p.role === 'Admin' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'
+              p.role === 'Admin' ? 'bg-purple-100 text-purple-800' :
+              p.role === 'Faculty' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
             }">${p.role}</span>
           </td>
           <td class="p-4 text-gray-600">${p.identifier}</td>
