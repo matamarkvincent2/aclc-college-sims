@@ -7,7 +7,8 @@ const PORT = process.env.PORT || 10000;
 const DB_FILE = path.join(__dirname, 'database.json');
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static files directly from the root directory
+app.use(express.static(__dirname));
 
 function readDB() {
   if (!fs.existsSync(DB_FILE)) {
@@ -23,8 +24,9 @@ function writeDB(data) {
   fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
 }
 
+// Explicit route to send index.html from root
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/api/profiles', (req, res) => {
