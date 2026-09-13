@@ -24,27 +24,21 @@
             <option value="Admin">Admin Staff Portal</option>
           </select>
         </div>
-        <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ACLC College of Mandaue - SIMS</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
         <div>
           <label class="block text-xs font-semibold text-gray-700 uppercase">ID Number</label>
-          <input type="text" id="loginId" required placeholder="e.g. 2026-0001" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
+          <input type="text" id="loginId" required placeholder="e.g. Faculty-01 or AdminStaff" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-700 uppercase">Password</label>
-          <input type="password" id="loginPass" required value="demo123" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
+          <input type="password" id="loginPass" required placeholder="Enter password" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
         </div>
         <button type="submit" class="w-full bg-blue-900 text-white font-semibold py-2.5 rounded-lg text-sm hover:bg-blue-800 transition">
           Sign In to Dashboard
         </button>
       </form>
       <div class="mt-6 text-center text-xs text-gray-400">
-        Demo Credentials:<br>
-        Student: <code>2026-0001</code> | Faculty: <code>FAC-1001</code> | Admin: <code>ADM-0001</code>
+        Faculty Login: <code>Faculty-01</code> / <code>facultystaff</code><br>
+        Admin Login: <code>AdminStaff</code> / <code>adminstaff</code>
       </div>
     </div>
   </div>
@@ -165,7 +159,26 @@
     document.getElementById('loginForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const role = document.getElementById('loginRole').value;
-      const identifier = document.getElementById('loginId').value;
+      const identifier = document.getElementById('loginId').value.trim();
+      const password = document.getElementById('loginPass').value;
+
+      // Strictly block Student login attempts
+      if (role === 'Student') {
+        alert('Access Denied: Student portal view is disabled. This system is exclusively for Faculty and Admin staff.');
+        return;
+      }
+
+      let isValid = false;
+      if (role === 'Faculty' && identifier === 'Faculty-01' && password === 'facultystaff') {
+        isValid = true;
+      } else if (role === 'Admin' && identifier === 'AdminStaff' && password === 'adminstaff') {
+        isValid = true;
+      }
+
+      if (!isValid) {
+        alert('Invalid ID Number or Password for the selected role.');
+        return;
+      }
 
       currentUser = { role, identifier };
 
@@ -176,12 +189,6 @@
       document.getElementById('sidebarRoleLabel').innerText = `Role: ${role}`;
       document.getElementById('userNameDisplay').innerText = identifier;
       document.getElementById('statActiveRole').innerText = role;
-
-      if (role === 'Student') {
-        document.getElementById('adminFormContainer').style.display = 'none';
-      } else {
-        document.getElementById('adminFormContainer').style.display = 'block';
-      }
 
       loadProfiles();
     });
@@ -204,6 +211,11 @@
       const tbody = document.getElementById('profilesTableBody');
       tbody.innerHTML = '';
       document.getElementById('statTotalCount').innerText = list.length;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">No records found.</td></tr>`;
+        return;
+      }
 
       list.forEach(p => {
         const deleteBtn = currentUser && currentUser.role === 'Admin'
@@ -240,10 +252,10 @@
 
     document.getElementById('profileForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const fullName = document.getElementById('fullName').value;
+      const fullName = document.getElementById('fullName').value.trim();
       const role = document.getElementById('role').value;
-      const identifier = document.getElementById('identifier').value;
-      const details = document.getElementById('details').value;
+      const identifier = document.getElementById('identifier').value.trim();
+      const details = document.getElementById('details').value.trim();
 
       await fetch('/api/profiles', {
         method: 'POST',
