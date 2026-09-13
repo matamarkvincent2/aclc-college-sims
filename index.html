@@ -157,156 +157,164 @@
     </div>
   </div>
 
-  <script>
-    let currentUser = null;
-    let allProfiles = [];
+ <script>
+  let currentUser = null;
+  let allProfiles = [];
 
-    document.getElementById('loginForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const role = document.getElementById('loginRole').value;
-      const identifier = document.getElementById('loginId').value.trim();
-      const password = document.getElementById('loginPass').value;
-
-      // Strictly block Student login attempts
-      if (role === 'Student') {
-        alert('Access Denied: Student portal view is disabled. This system is exclusively for Faculty and Admin staff.');
-        return;
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedUser = localStorage.getItem('simsUser');
+    if (savedUser) {
+      try {
+        currentUser = JSON.parse(savedUser);
+      } catch (e) {
+        currentUser = null;
       }
+    }
 
-      let isValid = false;
-      if (role === 'Faculty' && identifier === 'Faculty-01' && password === 'facultystaff') {
-        isValid = true;
-      } else if (role === 'Admin' && identifier === 'AdminStaff' && password === 'adminstaff') {
-        isValid = true;
-      }
-
-      if (!isValid) {
-        alert('Invalid ID Number or Password for the selected role.');
-        return;
-      }
-
-      currentUser = { role, identifier };
-
+    if (currentUser && currentUser.role && currentUser.identifier) {
       document.getElementById('loginSection').classList.add('hidden');
       document.getElementById('dashboardSection').classList.remove('hidden');
       document.getElementById('dashboardSection').classList.add('flex');
 
-      document.getElementById('sidebarRoleLabel').innerText = `Role: ${role}`;
-      document.getElementById('userNameDisplay').innerText = identifier;
-      document.getElementById('statActiveRole').innerText = role;
+      document.getElementById('sidebarRoleLabel').innerText = `Role: ${currentUser.role}`;
+      document.getElementById('userNameDisplay').innerText = currentUser.identifier;
+      document.getElementById('statActiveRole').innerText = currentUser.role;
 
-      loadProfiles();
-    });
-
-    function logout() {
-      currentUser = null;
-      document.getElementById('dashboardSection').classList.add('hidden');
-      document.getElementById('dashboardSection').classList.remove('flex');
-      document.getElementById('loginSection').classList.remove('hidden');
-    }
-
-    async function loadProfiles() {
-      const res = await fetch('/api/profiles');
-      const data = await res.json();
-      allProfiles = data.profiles;
-      renderTable(allProfiles);
-    }
-
-    function renderTable(list) {
-      const tbody = document.getElementById('profilesTableBody');
-      tbody.innerHTML = '';
-      document.getElementById('statTotalCount').innerText = list.length;
-
-      if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">No records found.</td></tr>`;
-        return;
+      if (currentUser.role === 'Student') {
+        document.getElementById('adminFormContainer').style.display = 'none';
+      } else {
+        document.getElementById('adminFormContainer').style.display = 'block';
       }
 
-      list.forEach(p => {
-        const deleteBtn = currentUser && currentUser.role === 'Admin'
-          ? `<button onclick="deleteProfile(${p.id})" class="text-red-600 hover:underline text-xs">Delete</button>`
-          : `<span class="text-gray-300 text-xs">-</span>`;
-
-        tbody.innerHTML += `
-          <tr class="hover:bg-slate-50">
-            <td class="p-4 font-medium text-gray-800">${p.fullName}</td>
-            <td class="p-4">
-              <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${
-                p.role === 'Admin' ? 'bg-purple-100 text-purple-800' :
-                p.role === 'Faculty' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
-              }">${p.role}</span>
-            </td>
-            <td class="p-4 text-gray-600">${p.identifier}</td>
-            <td class="p-4 text-gray-600">${p.details}</td>
-            <td class="p-4 text-right">${deleteBtn}</td>
-          </tr>
-        `;
-      });
+      loadProfiles();
+    } else {
+      localStorage.removeItem('simsUser');
+      logout();
     }
-    // Inside your loginForm submit event, right after validating:
-localStorage.setItem('simsUser', JSON.stringify({ role, identifier }));
+  });
 
-function logout() {
-  localStorage.removeItem('simsUser');
-  document.getElementById('dashboardSection').classList.add('hidden');
-  document.getElementById('dashboardSection').classList.remove('flex');
-  document.getElementById('loginSection').classList.remove('hidden');
-}
+  document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const role = document.getElementById('loginRole').value;
+    const identifier = document.getElementById('loginId').value.trim();
+    const password = document.getElementById('loginPass').value;
 
-window.addEventListener('DOMContentLoaded', () => {
-  const savedUser = localStorage.getItem('simsUser');
-  if (savedUser) {
-    currentUser = JSON.parse(savedUser);
+    if (role === 'Student') {
+      alert('Access Denied: Student portal view is disabled. This system is exclusively for Faculty and Admin staff.');
+      return;
+    }
+
+    let isValid = false;
+    if (role === 'Faculty' && identifier === 'Faculty-01' && password === 'facultystaff') {
+      isValid = true;
+    } else if (role === 'Admin' && identifier === 'AdminStaff' && password === 'adminstaff') {
+      isValid = true;
+    }
+
+    if (!isValid) {
+      alert('Invalid ID Number or Password for the selected role.');
+      return;
+    }
+
+    currentUser = { role, identifier };
+    localStorage.setItem('simsUser', JSON.stringify(currentUser));
+
     document.getElementById('loginSection').classList.add('hidden');
     document.getElementById('dashboardSection').classList.remove('hidden');
     document.getElementById('dashboardSection').classList.add('flex');
 
-    document.getElementById('sidebarRoleLabel').innerText = `Role: ${currentUser.role}`;
-    document.getElementById('userNameDisplay').innerText = currentUser.identifier;
-    document.getElementById('statActiveRole').innerText = currentUser.role;
+    document.getElementById('sidebarRoleLabel').innerText = `Role: ${role}`;
+    document.getElementById('userNameDisplay').innerText = identifier;
+    document.getElementById('statActiveRole').innerText = role;
 
-    if (currentUser.role === 'Student') {
+    if (role === 'Student') {
       document.getElementById('adminFormContainer').style.display = 'none';
     } else {
       document.getElementById('adminFormContainer').style.display = 'block';
     }
 
     loadProfiles();
-  }
-});
+  });
 
-    function filterTable() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = allProfiles.filter(p => 
-        p.fullName.toLowerCase().includes(query) ||
-        p.role.toLowerCase().includes(query) ||
-        p.identifier.toLowerCase().includes(query) ||
-        p.details.toLowerCase().includes(query)
-      );
-      renderTable(filtered);
+  function logout() {
+    currentUser = null;
+    localStorage.removeItem('simsUser');
+    document.getElementById('dashboardSection').classList.add('hidden');
+    document.getElementById('dashboardSection').classList.remove('flex');
+    document.getElementById('loginSection').classList.remove('hidden');
+  }
+
+  async function loadProfiles() {
+    const res = await fetch('/api/profiles');
+    const data = await res.json();
+    allProfiles = data.profiles;
+    renderTable(allProfiles);
+  }
+
+  function renderTable(list) {
+    const tbody = document.getElementById('profilesTableBody');
+    tbody.innerHTML = '';
+    document.getElementById('statTotalCount').innerText = list.length;
+
+    if (list.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">No records found.</td></tr>`;
+      return;
     }
 
-    document.getElementById('profileForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const fullName = document.getElementById('fullName').value.trim();
-      const role = document.getElementById('role').value;
-      const identifier = document.getElementById('identifier').value.trim();
-      const details = document.getElementById('details').value.trim();
+    list.forEach(p => {
+      const deleteBtn = currentUser && currentUser.role === 'Admin'
+        ? `<button onclick="deleteProfile(${p.id})" class="text-red-600 hover:underline text-xs">Delete</button>`
+        : `<span class="text-gray-300 text-xs">-</span>`;
 
-      await fetch('/api/profiles', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fullName, role, identifier, details })
-      });
+      tbody.innerHTML += `
+        <tr class="hover:bg-slate-50">
+          <td class="p-4 font-medium text-gray-800">${p.fullName}</td>
+          <td class="p-4">
+            <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${
+              p.role === 'Admin' ? 'bg-purple-100 text-purple-800' :
+              p.role === 'Faculty' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
+            }">${p.role}</span>
+          </td>
+          <td class="p-4 text-gray-600">${p.identifier}</td>
+          <td class="p-4 text-gray-600">${p.details}</td>
+          <td class="p-4 text-right">${deleteBtn}</td>
+        </tr>
+      `;
+    });
+  }
 
-      document.getElementById('profileForm').reset();
-      loadProfiles();
+  function filterTable() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = allProfiles.filter(p => 
+      p.fullName.toLowerCase().includes(query) ||
+      p.role.toLowerCase().includes(query) ||
+      p.identifier.toLowerCase().includes(query) ||
+      p.details.toLowerCase().includes(query)
+    );
+    renderTable(filtered);
+  }
+
+  document.getElementById('profileForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fullName = document.getElementById('fullName').value.trim();
+    const role = document.getElementById('role').value;
+    const identifier = document.getElementById('identifier').value.trim();
+    const details = document.getElementById('details').value.trim();
+
+    await fetch('/api/profiles', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fullName, role, identifier, details })
     });
 
-    async function deleteProfile(id) {
-      await fetch(`/api/profiles/${id}`, { method: 'DELETE' });
-      loadProfiles();
-    }
-  </script>
+    document.getElementById('profileForm').reset();
+    loadProfiles();
+  });
+
+  async function deleteProfile(id) {
+    await fetch(`/api/profiles/${id}`, { method: 'DELETE' });
+    loadProfiles();
+  }
+</script>
 </body>
 </html>
