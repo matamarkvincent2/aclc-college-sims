@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACLC College of Mandaue - SIMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 min-h-screen p-6">
+  <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <header class="border-b pb-4 mb-6">
+      <h1 class="text-2xl font-bold text-blue-900">ACLC College of Mandaue</h1>
+      <p class="text-sm text-gray-500">Student Information Management System (SIMS)</p>
+    </header>
+
+    <!-- Role Filter / Switcher -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="p-4 bg-blue-50 border border-blue-200 rounded">
+        <h3 class="font-semibold text-blue-800">Student Portal</h3>
+        <p class="text-xs text-gray-600 mt-1">View grades, schedule, and personal info.</p>
+      </div>
+      <div class="p-4 bg-green-50 border border-green-200 rounded">
+        <h3 class="font-semibold text-green-800">Faculty Portal</h3>
+        <p class="text-xs text-gray-600 mt-1">Manage class rosters and input grades.</p>
+      </div>
+      <div class="p-4 bg-purple-50 border border-purple-200 rounded">
+        <h3 class="font-semibold text-purple-800">Admin Staff Portal</h3>
+        <p class="text-xs text-gray-600 mt-1">System oversight and user management.</p>
+      </div>
+    </div>
+
+    <!-- Registration / Data Entry Form -->
+    <form id="profileForm" class="bg-gray-50 p-4 rounded mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs font-medium text-gray-700">Full Name</label>
+        <input type="text" id="fullName" required class="w-full mt-1 border rounded p-2 text-sm" placeholder="Juan Dela Cruz">
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-700">Role</label>
+        <select id="role" class="w-full mt-1 border rounded p-2 text-sm">
+          <option value="Student">Student</option>
+          <option value="Faculty">Faculty</option>
+          <option value="Admin">Admin Staff</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-700">ID / Number</label>
+        <input type="text" id="identifier" required class="w-full mt-1 border rounded p-2 text-sm" placeholder="2026-0001">
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-700">Details / Course / Department</label>
+        <input type="text" id="details" required class="w-full mt-1 border rounded p-2 text-sm" placeholder="BSIT - 3rd Year">
+      </div>
+      <div class="md:col-span-2">
+        <button type="submit" class="bg-blue-900 text-white px-4 py-2 rounded text-sm hover:bg-blue-800">Save Record</button>
+      </div>
+    </form>
+
+    <!-- Records Table -->
+    <h3 class="font-semibold text-gray-800 mb-2">Directory Records</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse text-sm">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="p-2 border">Name</th>
+            <th class="p-2 border">Role</th>
+            <th class="p-2 border">ID / Number</th>
+            <th class="p-2 border">Details</th>
+          </tr>
+        </thead>
+        <tbody id="profilesTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    async function loadProfiles() {
+      const res = await fetch('/api/profiles');
+      const data = await res.json();
+      const tbody = document.getElementById('profilesTableBody');
+      tbody.innerHTML = '';
+      data.profiles.forEach(p => {
+        tbody.innerHTML += `
+          <tr>
+            <td class="p-2 border">${p.fullName}</td>
+            <td class="p-2 border font-medium">${p.role}</td>
+            <td class="p-2 border">${p.identifier}</td>
+            <td class="p-2 border">${p.details}</td>
+          </tr>
+        `;
+      });
+    }
+
+    document.getElementById('profileForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fullName = document.getElementById('fullName').value;
+      const role = document.getElementById('role').value;
+      const identifier = document.getElementById('identifier').value;
+      const details = document.getElementById('details').value;
+
+      await fetch('/api/profiles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fullName, role, identifier, details })
+      });
+
+      document.getElementById('profileForm').reset();
+      loadProfiles();
+    });
+
+    loadProfiles();
+  </script>
+</body>
+</html>
