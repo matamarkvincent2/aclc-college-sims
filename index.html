@@ -19,7 +19,6 @@
         <div>
           <label class="block text-xs font-semibold text-gray-700 uppercase">Select Role</label>
           <select id="loginRole" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
-            <option value="Student">Student Portal</option>
             <option value="Faculty">Faculty Portal</option>
             <option value="Admin">Admin Staff Portal</option>
           </select>
@@ -71,7 +70,7 @@
       <!-- Top Navbar -->
       <header class="bg-white border-b px-6 py-4 flex justify-between items-center">
         <div>
-          <h2 id="pageTitle" class="text-xl font-bold text-gray-800">Student & Staff Dashboard</h2>
+          <h2 id="pageTitle" class="text-xl font-bold text-gray-800">Staff Dashboard</h2>
           <p class="text-xs text-gray-500">Welcome back, <span id="userNameDisplay">User</span></p>
         </div>
         <button onclick="logout()" class="md:hidden bg-red-600 text-white px-3 py-1.5 rounded text-xs">Logout</button>
@@ -86,7 +85,7 @@
           </div>
           <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
             <h4 class="text-xs font-semibold text-gray-400 uppercase">Active Role View</h4>
-            <p id="statActiveRole" class="text-2xl font-bold text-green-700 mt-1">Student</p>
+            <p id="statActiveRole" class="text-2xl font-bold text-green-700 mt-1">Faculty</p>
           </div>
           <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
             <h4 class="text-xs font-semibold text-gray-400 uppercase">System Status</h4>
@@ -105,7 +104,6 @@
             <div>
               <label class="block text-xs font-medium text-gray-600">Role</label>
               <select id="role" class="w-full mt-1 border rounded-lg p-2 text-sm">
-                <option value="Student">Student</option>
                 <option value="Faculty">Faculty</option>
                 <option value="Admin">Admin</option>
               </select>
@@ -116,7 +114,7 @@
             </div>
             <div>
               <label class="block text-xs font-medium text-gray-600">Details / Course / Dept</label>
-              <input type="text" id="details" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="BSIT - 2nd Year">
+              <input type="text" id="details" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="BSIT - Dept">
             </div>
             <div class="md:col-span-4 flex justify-end">
               <button type="submit" class="bg-blue-900 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">
@@ -125,12 +123,7 @@
             </div>
           </form>
         </div>
-        <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ACLC College of Mandaue - SIMS</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
+
         <!-- Data Table -->
         <div id="directory" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
           <div class="px-6 py-4 border-b flex justify-between items-center">
@@ -157,7 +150,7 @@
     </div>
   </div>
 
- <script>
+<script>
   let currentUser = null;
   let allProfiles = [];
 
@@ -180,10 +173,10 @@
       document.getElementById('userNameDisplay').innerText = currentUser.identifier;
       document.getElementById('statActiveRole').innerText = currentUser.role;
 
-      if (currentUser.role === 'Student') {
-        document.getElementById('adminFormContainer').style.display = 'none';
-      } else {
+      if (currentUser.role === 'Admin') {
         document.getElementById('adminFormContainer').style.display = 'block';
+      } else {
+        document.getElementById('adminFormContainer').style.display = 'none';
       }
 
       loadProfiles();
@@ -198,11 +191,6 @@
     const role = document.getElementById('loginRole').value;
     const identifier = document.getElementById('loginId').value.trim();
     const password = document.getElementById('loginPass').value;
-
-    if (role === 'Student') {
-      alert('Access Denied: Student portal view is disabled. This system is exclusively for Faculty and Admin staff.');
-      return;
-    }
 
     let isValid = false;
     if (role === 'Faculty' && identifier === 'Faculty-01' && password === 'facultystaff') {
@@ -227,10 +215,10 @@
     document.getElementById('userNameDisplay').innerText = identifier;
     document.getElementById('statActiveRole').innerText = role;
 
-    if (role === 'Student') {
-      document.getElementById('adminFormContainer').style.display = 'none';
-    } else {
+    if (role === 'Admin') {
       document.getElementById('adminFormContainer').style.display = 'block';
+    } else {
+      document.getElementById('adminFormContainer').style.display = 'none';
     }
 
     loadProfiles();
@@ -271,8 +259,7 @@
           <td class="p-4 font-medium text-gray-800">${p.fullName}</td>
           <td class="p-4">
             <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${
-              p.role === 'Admin' ? 'bg-purple-100 text-purple-800' :
-              p.role === 'Faculty' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
+              p.role === 'Admin' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'
             }">${p.role}</span>
           </td>
           <td class="p-4 text-gray-600">${p.identifier}</td>
