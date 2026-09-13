@@ -1,63 +1,58 @@
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
+
 const app = express();
+const PORT = process.env.PORT || 10000;
+const DB_FILE = path.join(__dirname, 'database.json');
 
-app.use(express.static(__dirname));
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+function readDB() {
+  if (!fs.existsSync(DB_FILE)) {
+    const initialData = [
+      { id: 1, fullName: 'Juan Dela Cruz', role: 'Student', identifier: '2026-0001', details: 'BSIT - 3rd Year' }
+    ];
+    fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2));
+  }
+  return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+}
 
-const db = new sqlite3.Database('./database.sqlite');
-
-db.serialize(() => {
-  db.run(`CREATE TABLE IF NOT EXISTS profiles (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    fullName TEXT,
-    role TEXT,
-    identifier TEXT,
-    details TEXT
-  )`);
-
-  db.get("SELECT count(*) as count FROM profiles", (err, row) => {
-    if (row && row.count === 0) {
-      const stmt = db.prepare("INSERT INTO profiles (fullName, role, identifier, details) VALUES (?, ?, ?, ?)");
-      stmt.run("Juan Dela Cruz", "Student", "2026-0001", "BSIT - 3rd Year");
-      stmt.run("Prof. Maria Santos", "Faculty", "FAC-1001", "Computer Studies Department");
-      stmt.run("Admin Director", "Admin", "ADM-0001", "System Administrator");
-      stmt.finalize();
-    }
-  });
-});
+function writeDB(data) {
+  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+}
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.get('/api/profiles', (req, res) => {
-  db.all("SELECT * FROM profiles", [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ profiles: rows });
-  });
+  const profiles = readDB();
+  res.json({ profiles });
 });
 
 app.post('/api/profiles', (req, res) => {
   const { fullName, role, identifier, details } = req.body;
-  db.run(
-    "INSERT INTO profiles (fullName, role, identifier, details) VALUES (?, ?, ?, ?)",
-    [fullName, role, identifier, details],
-    function (err) {
-      if (err) return res.status(400).json({ error: err.message });
-      res.json({ id: this.lastID });
-    }
-  );
+  const profiles = readDB();
+  const newProfile = {
+    id: Date.now(),
+    fullName,
+    role,
+    identifier,
+    details
+  };
+  profiles.push(newProfile);
+  writeDB(profiles);
+  res.json({ id: newProfile.id });
 });
 
 app.delete('/api/profiles/:id', (req, res) => {
-  db.run("DELETE FROM profiles WHERE id = ?", req.params.id, function (err) {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ deleted: this.changes });
-  });
+  let profiles = readDB();
+  const id = Number(req.params.id);
+  profiles = profiles.filter(p => p.id !== id);
+  writeDB(profiles);
+  res.json({ deleted: 1 });
 });
 
 app.listen(PORT, () => {
