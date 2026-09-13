@@ -6,89 +6,230 @@
   <title>ACLC College of Mandaue - SIMS</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-100 min-h-screen p-6">
-  <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
-    <header class="border-b pb-4 mb-6">
-      <h1 class="text-2xl font-bold text-blue-900">ACLC College of Mandaue</h1>
-      <p class="text-sm text-gray-500">Student Information Management System (SIMS)</p>
-    </header>
+<body class="bg-slate-100 min-h-screen font-sans">
 
-    <!-- Role Filter / Switcher -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <div class="p-4 bg-blue-50 border border-blue-200 rounded">
-        <h3 class="font-semibold text-blue-800">Student Portal</h3>
-        <p class="text-xs text-gray-600 mt-1">View grades, schedule, and personal info.</p>
+  <!-- ==================== LOGIN SECTION ==================== -->
+  <div id="loginSection" class="flex items-center justify-center min-h-screen p-4">
+    <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8 border border-slate-200">
+      <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-blue-900">ACLC College of Mandaue</h1>
+        <p class="text-sm text-gray-500 mt-1">Student Information Management System</p>
       </div>
-      <div class="p-4 bg-green-50 border border-green-200 rounded">
-        <h3 class="font-semibold text-green-800">Faculty Portal</h3>
-        <p class="text-xs text-gray-600 mt-1">Manage class rosters and input grades.</p>
-      </div>
-      <div class="p-4 bg-purple-50 border border-purple-200 rounded">
-        <h3 class="font-semibold text-purple-800">Admin Staff Portal</h3>
-        <p class="text-xs text-gray-600 mt-1">System oversight and user management.</p>
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 uppercase">Select Role</label>
+          <select id="loginRole" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
+            <option value="Student">Student Portal</option>
+            <option value="Faculty">Faculty Portal</option>
+            <option value="Admin">Admin Staff Portal</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 uppercase">ID Number</label>
+          <input type="text" id="loginId" required placeholder="e.g. 2026-0001" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 uppercase">Password</label>
+          <input type="password" id="loginPass" required value="demo123" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
+        </div>
+        <button type="submit" class="w-full bg-blue-900 text-white font-semibold py-2.5 rounded-lg text-sm hover:bg-blue-800 transition">
+          Sign In to Dashboard
+        </button>
+      </form>
+      <div class="mt-6 text-center text-xs text-gray-400">
+        Demo Credentials:<br>
+        Student: <code>2026-0001</code> | Faculty: <code>FAC-1001</code> | Admin: <code>ADM-0001</code>
       </div>
     </div>
+  </div>
 
-    <!-- Registration / Data Entry Form -->
-    <form id="profileForm" class="bg-gray-50 p-4 rounded mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+  <!-- ==================== DASHBOARD SECTION ==================== -->
+  <div id="dashboardSection" class="hidden flex h-screen overflow-hidden">
+    
+    <!-- Sidebar -->
+    <aside class="w-64 bg-blue-950 text-white flex-col justify-between hidden md:flex">
       <div>
-        <label class="block text-xs font-medium text-gray-700">Full Name</label>
-        <input type="text" id="fullName" required class="w-full mt-1 border rounded p-2 text-sm" placeholder="Juan Dela Cruz">
+        <div class="p-6 border-b border-blue-900">
+          <h2 class="font-bold text-lg text-white">ACLC Mandaue</h2>
+          <p id="sidebarRoleLabel" class="text-xs text-blue-300">Role: Admin</p>
+        </div>
+        <nav class="mt-4 px-2 space-y-1">
+          <a href="#" class="flex items-center px-4 py-2.5 bg-blue-900 rounded-lg text-sm font-medium">Dashboard Overview</a>
+          <a href="#directory" class="flex items-center px-4 py-2.5 hover:bg-blue-900 rounded-lg text-sm font-medium text-blue-200">Directory & Records</a>
+        </nav>
       </div>
-      <div>
-        <label class="block text-xs font-medium text-gray-700">Role</label>
-        <select id="role" class="w-full mt-1 border rounded p-2 text-sm">
-          <option value="Student">Student</option>
-          <option value="Faculty">Faculty</option>
-          <option value="Admin">Admin Staff</option>
-        </select>
+      <div class="p-4 border-t border-blue-900">
+        <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-300 hover:bg-blue-900 rounded-lg transition">
+          Sign Out
+        </button>
       </div>
-      <div>
-        <label class="block text-xs font-medium text-gray-700">ID / Number</label>
-        <input type="text" id="identifier" required class="w-full mt-1 border rounded p-2 text-sm" placeholder="2026-0001">
-      </div>
-      <div>
-        <label class="block text-xs font-medium text-gray-700">Details / Course / Department</label>
-        <input type="text" id="details" required class="w-full mt-1 border rounded p-2 text-sm" placeholder="BSIT - 3rd Year">
-      </div>
-      <div class="md:col-span-2">
-        <button type="submit" class="bg-blue-900 text-white px-4 py-2 rounded text-sm hover:bg-blue-800">Save Record</button>
-      </div>
-    </form>
+    </aside>
 
-    <!-- Records Table -->
-    <h3 class="font-semibold text-gray-800 mb-2">Directory Records</h3>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left border-collapse text-sm">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="p-2 border">Name</th>
-            <th class="p-2 border">Role</th>
-            <th class="p-2 border">ID / Number</th>
-            <th class="p-2 border">Details</th>
-          </tr>
-        </thead>
-        <tbody id="profilesTableBody"></tbody>
-      </table>
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col overflow-y-auto">
+      
+      <!-- Top Navbar -->
+      <header class="bg-white border-b px-6 py-4 flex justify-between items-center">
+        <div>
+          <h2 id="pageTitle" class="text-xl font-bold text-gray-800">Student & Staff Dashboard</h2>
+          <p class="text-xs text-gray-500">Welcome back, <span id="userNameDisplay">User</span></p>
+        </div>
+        <button onclick="logout()" class="md:hidden bg-red-600 text-white px-3 py-1.5 rounded text-xs">Logout</button>
+      </header>
+
+      <!-- Dashboard Stats Cards -->
+      <main class="p-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <h4 class="text-xs font-semibold text-gray-400 uppercase">Total Profiles</h4>
+            <p id="statTotalCount" class="text-2xl font-bold text-blue-900 mt-1">0</p>
+          </div>
+          <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <h4 class="text-xs font-semibold text-gray-400 uppercase">Active Role View</h4>
+            <p id="statActiveRole" class="text-2xl font-bold text-green-700 mt-1">Student</p>
+          </div>
+          <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <h4 class="text-xs font-semibold text-gray-400 uppercase">System Status</h4>
+            <p class="text-2xl font-bold text-emerald-600 mt-1">Online</p>
+          </div>
+        </div>
+
+        <!-- Add New Record Form -->
+        <div id="adminFormContainer" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+          <h3 class="font-bold text-gray-800 mb-4">Register / Add New Directory Record</h3>
+          <form id="profileForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-gray-600">Full Name</label>
+              <input type="text" id="fullName" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="Juan Dela Cruz">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600">Role</label>
+              <select id="role" class="w-full mt-1 border rounded-lg p-2 text-sm">
+                <option value="Student">Student</option>
+                <option value="Faculty">Faculty</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600">ID / Number</label>
+              <input type="text" id="identifier" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="2026-0002">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600">Details / Course / Dept</label>
+              <input type="text" id="details" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="BSIT - 2nd Year">
+            </div>
+            <div class="md:col-span-4 flex justify-end">
+              <button type="submit" class="bg-blue-900 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">
+                Save to Database
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Data Table -->
+        <div id="directory" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+          <div class="px-6 py-4 border-b flex justify-between items-center">
+            <h3 class="font-bold text-gray-800">Directory Records</h3>
+            <input type="text" id="searchInput" placeholder="Search records..." class="border rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-blue-800" onkeyup="filterTable()">
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="bg-slate-50 text-gray-500 uppercase text-xs">
+                  <th class="p-4 border-b">Name</th>
+                  <th class="p-4 border-b">Role</th>
+                  <th class="p-4 border-b">ID / Number</th>
+                  <th class="p-4 border-b">Details</th>
+                  <th class="p-4 border-b text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="profilesTableBody" class="divide-y divide-gray-100"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
     </div>
   </div>
 
   <script>
+    let currentUser = null;
+    let allProfiles = [];
+
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const role = document.getElementById('loginRole').value;
+      const identifier = document.getElementById('loginId').value;
+
+      currentUser = { role, identifier };
+
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('dashboardSection').classList.remove('hidden');
+      document.getElementById('dashboardSection').classList.add('flex');
+
+      document.getElementById('sidebarRoleLabel').innerText = `Role: ${role}`;
+      document.getElementById('userNameDisplay').innerText = identifier;
+      document.getElementById('statActiveRole').innerText = role;
+
+      if (role === 'Student') {
+        document.getElementById('adminFormContainer').style.display = 'none';
+      } else {
+        document.getElementById('adminFormContainer').style.display = 'block';
+      }
+
+      loadProfiles();
+    });
+
+    function logout() {
+      currentUser = null;
+      document.getElementById('dashboardSection').classList.add('hidden');
+      document.getElementById('dashboardSection').classList.remove('flex');
+      document.getElementById('loginSection').classList.remove('hidden');
+    }
+
     async function loadProfiles() {
       const res = await fetch('/api/profiles');
       const data = await res.json();
+      allProfiles = data.profiles;
+      renderTable(allProfiles);
+    }
+
+    function renderTable(list) {
       const tbody = document.getElementById('profilesTableBody');
       tbody.innerHTML = '';
-      data.profiles.forEach(p => {
+      document.getElementById('statTotalCount').innerText = list.length;
+
+      list.forEach(p => {
+        const deleteBtn = currentUser && currentUser.role === 'Admin'
+          ? `<button onclick="deleteProfile(${p.id})" class="text-red-600 hover:underline text-xs">Delete</button>`
+          : `<span class="text-gray-300 text-xs">-</span>`;
+
         tbody.innerHTML += `
-          <tr>
-            <td class="p-2 border">${p.fullName}</td>
-            <td class="p-2 border font-medium">${p.role}</td>
-            <td class="p-2 border">${p.identifier}</td>
-            <td class="p-2 border">${p.details}</td>
+          <tr class="hover:bg-slate-50">
+            <td class="p-4 font-medium text-gray-800">${p.fullName}</td>
+            <td class="p-4">
+              <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${
+                p.role === 'Admin' ? 'bg-purple-100 text-purple-800' :
+                p.role === 'Faculty' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
+              }">${p.role}</span>
+            </td>
+            <td class="p-4 text-gray-600">${p.identifier}</td>
+            <td class="p-4 text-gray-600">${p.details}</td>
+            <td class="p-4 text-right">${deleteBtn}</td>
           </tr>
         `;
       });
+    }
+
+    function filterTable() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = allProfiles.filter(p => 
+        p.fullName.toLowerCase().includes(query) ||
+        p.role.toLowerCase().includes(query) ||
+        p.identifier.toLowerCase().includes(query) ||
+        p.details.toLowerCase().includes(query)
+      );
+      renderTable(filtered);
     }
 
     document.getElementById('profileForm').addEventListener('submit', async (e) => {
@@ -108,7 +249,10 @@
       loadProfiles();
     });
 
-    loadProfiles();
+    async function deleteProfile(id) {
+      await fetch(`/api/profiles/${id}`, { method: 'DELETE' });
+      loadProfiles();
+    }
   </script>
 </body>
 </html>
