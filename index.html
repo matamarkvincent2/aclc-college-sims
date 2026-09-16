@@ -5,36 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ACLC College of Mandaue - SIMS</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom Neon Blue & Red Glow Background */
+    .neon-bg {
+      background-color: #030712;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(0, 102, 255, 0.25) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(255, 20, 50, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(0, 229, 255, 0.1) 0%, transparent 60%);
+    }
+  </style>
 </head>
-<body class="bg-slate-100 min-h-screen font-sans">
+<body class="neon-bg min-h-screen font-sans text-gray-100">
 
   <!-- ==================== LOGIN SECTION ==================== -->
   <div id="loginSection" class="flex items-center justify-center min-h-screen p-4">
-    <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8 border border-slate-200">
+    <div class="max-w-md w-full bg-gray-900/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-blue-500/30 shadow-[0_0_30px_rgba(0,102,255,0.15)]">
       <div class="text-center mb-6">
-        <h1 class="text-2xl font-bold text-blue-900">ACLC College of Mandaue</h1>
+        <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">ACLC College of Mandaue</h1>
       </div>
       <form id="loginForm" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-gray-700 uppercase">Select Portal</label>
-          <select id="loginRole" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
+          <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider">Select Portal</label>
+          <select id="loginRole" class="w-full mt-1 bg-gray-800 text-gray-200 border border-gray-700 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
             <option value="Faculty">Faculty Portal</option>
             <option value="Admin">Admin Portal</option>
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-700 uppercase">Username</label>
-          <input type="text" id="loginId" required placeholder="Input access username" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
+          <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider">Username</label>
+          <input type="text" id="loginId" required placeholder="Input access username" class="w-full mt-1 bg-gray-800 text-gray-200 border border-gray-700 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-500">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-700 uppercase">Password</label>
-          <input type="password" id="loginPass" required placeholder="Enter password" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
+          <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider">Password</label>
+          <input type="password" id="loginPass" required placeholder="Enter password" class="w-full mt-1 bg-gray-800 text-gray-200 border border-gray-700 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-500">
         </div>
-        <button type="submit" class="w-full bg-blue-900 text-white font-semibold py-2.5 rounded-lg text-sm hover:bg-blue-800 transition">
+        <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold py-2.5 rounded-lg text-sm hover:from-blue-500 hover:to-cyan-400 shadow-[0_0_15px_rgba(0,149,255,0.4)] transition">
           Sign In to Portal
         </button>
       </form>
-      <div class="mt-6 text-center text-xs text-gray-400">
+      <div class="mt-6 text-center text-xs text-gray-500">
         
       </div>
     </div>
@@ -44,151 +54,151 @@
   <div id="dashboardSection" class="hidden flex h-screen overflow-hidden">
     
     <!-- Sidebar -->
-    <aside class="w-64 bg-blue-950 text-white flex-col justify-between hidden md:flex">
+    <aside class="w-64 bg-gray-950 text-white flex-col justify-between hidden md:flex border-r border-blue-900/40">
       <div>
-        <div class="p-6 border-b border-blue-900">
-          <h2 id="sidebarPortalTitle" class="font-bold text-lg text-white">ACLC Mandaue</h2>
+        <div class="p-6 border-b border-gray-800">
+          <h2 id="sidebarPortalTitle" class="font-bold text-lg text-blue-400">ACLC Mandaue</h2>
           <p id="sidebarRoleLabel" class="text-xs text-blue-300">Role: Portal</p>
         </div>
         <nav class="mt-4 px-2 space-y-1">
-          <button onclick="switchPage('overview')" id="navOverview" class="w-full text-left flex items-center px-4 py-2.5 bg-blue-900 rounded-lg text-sm font-medium transition">Dashboard Overview</button>
-          <button onclick="switchPage('directory')" id="navDirectory" class="w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-900 rounded-lg text-sm font-medium text-blue-200 transition">Directory & Records</button>
+          <button onclick="switchPage('overview')" id="navOverview" class="w-full text-left flex items-center px-4 py-2.5 bg-blue-600/20 border border-blue-500/30 rounded-lg text-sm font-medium transition text-white">Dashboard Overview</button>
+          <button onclick="switchPage('directory')" id="navDirectory" class="w-full text-left flex items-center px-4 py-2.5 hover:bg-gray-800 rounded-lg text-sm font-medium text-gray-300 transition">Directory & Records</button>
         </nav>
       </div>
-      <div class="p-4 border-t border-blue-900">
-        <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-300 hover:bg-blue-900 rounded-lg transition">
+      <div class="p-4 border-t border-gray-800">
+        <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 rounded-lg transition">
           Sign Out
         </button>
       </div>
     </aside>
 
     <!-- Main Content Area -->
-    <div class="flex-1 flex flex-col overflow-y-auto">
+    <div class="flex-1 flex flex-col overflow-y-auto bg-gray-900/60">
       
       <!-- Top Navbar -->
-      <header class="bg-white border-b px-6 py-4 flex justify-between items-center">
+      <header class="bg-gray-900/80 backdrop-blur border-b border-gray-800 px-6 py-4 flex justify-between items-center">
         <div>
-          <h2 id="pageTitle" class="text-xl font-bold text-gray-800">Dashboard</h2>
-          <p class="text-xs text-gray-500">Welcome back, <span id="userNameDisplay">User</span></p>
+          <h2 id="pageTitle" class="text-xl font-bold text-gray-100">Dashboard</h2>
+          <p class="text-xs text-gray-400">Welcome back, <span id="userNameDisplay">User</span></p>
         </div>
         <button onclick="logout()" class="md:hidden bg-red-600 text-white px-3 py-1.5 rounded text-xs">Logout</button>
       </header>
 
       <!-- Main Dynamic Content Views -->
-      <main class="p-6 space-y-6">
+      <main class="p-6 space-y-6 text-gray-200">
 
         <!-- ================= PAGE 1: OVERVIEW VIEW ================= -->
         <div id="viewOverview" class="space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <div class="bg-gray-900/90 border border-gray-800 p-5 rounded-xl shadow-lg">
               <h4 class="text-xs font-semibold text-gray-400 uppercase">Total Profiles</h4>
-              <p id="statTotalCount" class="text-2xl font-bold text-blue-900 mt-1">0</p>
+              <p id="statTotalCount" class="text-2xl font-bold text-blue-400 mt-1">0</p>
             </div>
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <div class="bg-gray-900/90 border border-gray-800 p-5 rounded-xl shadow-lg">
               <h4 class="text-xs font-semibold text-gray-400 uppercase">Active Portal</h4>
-              <p id="statActiveRole" class="text-2xl font-bold text-green-700 mt-1">Portal</p>
+              <p id="statActiveRole" class="text-2xl font-bold text-emerald-400 mt-1">Portal</p>
             </div>
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <div class="bg-gray-900/90 border border-gray-800 p-5 rounded-xl shadow-lg">
               <h4 class="text-xs font-semibold text-gray-400 uppercase">System Status</h4>
-              <p class="text-2xl font-bold text-emerald-600 mt-1">Online</p>
+              <p class="text-2xl font-bold text-emerald-400 mt-1">Online</p>
             </div>
           </div>
 
           <!-- Role Breakdown Analytics -->
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-5">
+          <div class="bg-gray-900/90 border border-gray-800 p-6 rounded-xl shadow-lg space-y-5">
             <div>
-              <h3 class="text-md font-bold text-gray-800">Database Role Population Analytics</h3>
-              <p class="text-xs text-gray-500">Count of registered students, faculty members, and admin staff</p>
+              <h3 class="text-md font-bold text-gray-100">Database Role Population Analytics</h3>
+              <p class="text-xs text-gray-400">Count of registered students, faculty members, and admin staff</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div class="bg-gray-800/50 p-4 rounded-xl border border-gray-800">
                 <div class="flex justify-between items-center mb-2">
-                  <span class="text-xs font-semibold text-gray-500 uppercase">Students</span>
-                  <span id="countStudents" class="text-lg font-bold text-blue-900">0</span>
+                  <span class="text-xs font-semibold text-gray-400 uppercase">Students</span>
+                  <span id="countStudents" class="text-lg font-bold text-blue-400">0</span>
                 </div>
-                <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                  <div id="barStudents" class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                <div class="w-full bg-gray-700 h-2.5 rounded-full overflow-hidden">
+                  <div id="barStudents" class="bg-blue-500 h-full rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(0,102,255,0.6)]" style="width: 0%"></div>
                 </div>
               </div>
 
-              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div class="bg-gray-800/50 p-4 rounded-xl border border-gray-800">
                 <div class="flex justify-between items-center mb-2">
-                  <span class="text-xs font-semibold text-gray-500 uppercase">Faculty Staff</span>
-                  <span id="countFaculty" class="text-lg font-bold text-green-700">0</span>
+                  <span class="text-xs font-semibold text-gray-400 uppercase">Faculty Staff</span>
+                  <span id="countFaculty" class="text-lg font-bold text-emerald-400">0</span>
                 </div>
-                <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                  <div id="barFaculty" class="bg-green-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                <div class="w-full bg-gray-700 h-2.5 rounded-full overflow-hidden">
+                  <div id="barFaculty" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                 </div>
               </div>
 
-              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div class="bg-gray-800/50 p-4 rounded-xl border border-gray-800">
                 <div class="flex justify-between items-center mb-2">
-                  <span class="text-xs font-semibold text-gray-500 uppercase">Admin Staff</span>
-                  <span id="countAdmin" class="text-lg font-bold text-purple-700">0</span>
+                  <span class="text-xs font-semibold text-gray-400 uppercase">Admin Staff</span>
+                  <span id="countAdmin" class="text-lg font-bold text-purple-400">0</span>
                 </div>
-                <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                  <div id="barAdmin" class="bg-purple-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                <div class="w-full bg-gray-700 h-2.5 rounded-full overflow-hidden">
+                  <div id="barAdmin" class="bg-purple-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Student Year Level Analytics with Visual Bars -->
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-5">
+          <div class="bg-gray-900/90 border border-gray-800 p-6 rounded-xl shadow-lg space-y-5">
             <div>
-              <h3 class="text-md font-bold text-gray-800">Student Year Level Analytics</h3>
-              <p class="text-xs text-gray-500">Real-time population breakdown across academic year levels</p>
+              <h3 class="text-md font-bold text-gray-100">Student Year Level Analytics</h3>
+              <p class="text-xs text-gray-400">Real-time population breakdown across academic year levels</p>
             </div>
             
             <div class="space-y-4">
               <div>
-                <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                <div class="flex justify-between text-xs font-semibold text-gray-300 mb-1">
                   <span>1st Year Students</span>
                   <span id="countYear1">0</span>
                 </div>
-                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                  <div id="barYear1" class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden">
+                  <div id="barYear1" class="bg-blue-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                 </div>
               </div>
 
               <div>
-                <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                <div class="flex justify-between text-xs font-semibold text-gray-300 mb-1">
                   <span>2nd Year Students</span>
                   <span id="countYear2">0</span>
                 </div>
-                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                  <div id="barYear2" class="bg-indigo-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden">
+                  <div id="barYear2" class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                 </div>
               </div>
 
               <div>
-                <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                <div class="flex justify-between text-xs font-semibold text-gray-300 mb-1">
                   <span>3rd Year Students</span>
                   <span id="countYear3">0</span>
                 </div>
-                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                  <div id="barYear3" class="bg-violet-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden">
+                  <div id="barYear3" class="bg-violet-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                 </div>
               </div>
 
               <div>
-                <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                <div class="flex justify-between text-xs font-semibold text-gray-300 mb-1">
                   <span>4th Year Students</span>
                   <span id="countYear4">0</span>
                 </div>
-                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                  <div id="barYear4" class="bg-purple-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                <div class="w-full bg-gray-800 h-3 rounded-full overflow-hidden">
+                  <div id="barYear4" class="bg-pink-500 h-full rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(255,20,100,0.5)]" style="width: 0%"></div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
-            <h3 id="welcomeHeader" class="text-lg font-bold text-gray-800 mb-2">Welcome to the Portal</h3>
-            <p class="text-sm text-gray-600">Use the sidebar navigation to view and manage institutional database entries, browse student & staff records, or register new credentials.</p>
+          <div class="bg-gray-900/90 border border-gray-800 p-8 rounded-xl shadow-lg">
+            <h3 id="welcomeHeader" class="text-lg font-bold text-gray-100 mb-2">Welcome to the Portal</h3>
+            <p class="text-sm text-gray-400">Use the sidebar navigation to view and manage institutional database entries, browse student & staff records, or register new credentials.</p>
             <div class="mt-6 flex gap-3">
-              <button onclick="switchPage('directory')" class="bg-blue-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">Go to Directory & Records</button>
+              <button onclick="switchPage('directory')" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-500 shadow-[0_0_10px_rgba(0,102,255,0.4)] transition">Go to Directory & Records</button>
             </div>
           </div>
         </div>
@@ -196,31 +206,31 @@
         <!-- ================= PAGE 2: DIRECTORY & RECORDS VIEW ================= -->
         <div id="viewDirectory" class="hidden space-y-6">
           <!-- Add New Record Form -->
-          <div id="adminFormContainer" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-            <h3 class="font-bold text-gray-800 mb-4">Register / Add New Directory Record</h3>
+          <div id="adminFormContainer" class="bg-gray-900/90 border border-gray-800 p-6 rounded-xl shadow-lg">
+            <h3 class="font-bold text-gray-100 mb-4">Register / Add New Directory Record</h3>
             <form id="profileForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label class="block text-xs font-medium text-gray-600">Full Name</label>
-                <input type="text" id="fullName" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="TESTING">
+                <label class="block text-xs font-medium text-gray-300">Full Name</label>
+                <input type="text" id="fullName" required class="w-full mt-1 bg-gray-800 border border-gray-700 text-gray-200 rounded-lg p-2 text-sm outline-none focus:ring-1 focus:ring-blue-500" placeholder="TESTING">
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-600">Role</label>
-                <select id="role" class="w-full mt-1 border rounded-lg p-2 text-sm">
+                <label class="block text-xs font-medium text-gray-300">Role</label>
+                <select id="role" class="w-full mt-1 bg-gray-800 border border-gray-700 text-gray-200 rounded-lg p-2 text-sm outline-none">
                   <option value="Student">Student</option>
                   <option value="Faculty">Faculty</option>
                   <option value="Admin">Admin</option>
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-600">ID / Number</label>
-                <input type="text" id="identifier" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="2026-0002">
+                <label class="block text-xs font-medium text-gray-300">ID / Number</label>
+                <input type="text" id="identifier" required class="w-full mt-1 bg-gray-800 border border-gray-700 text-gray-200 rounded-lg p-2 text-sm outline-none" placeholder="2026-0002">
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-600">Details / Course / Dept</label>
-                <input type="text" id="details" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="BSIT - 3rd Year">
+                <label class="block text-xs font-medium text-gray-300">Details / Course / Dept</label>
+                <input type="text" id="details" required class="w-full mt-1 bg-gray-800 border border-gray-700 text-gray-200 rounded-lg p-2 text-sm outline-none" placeholder="BSIT - 3rd Year">
               </div>
               <div class="md:col-span-4 flex justify-end">
-                <button type="submit" class="bg-blue-900 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">
+                <button type="submit" class="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-500 shadow-[0_0_10px_rgba(0,102,255,0.4)] transition">
                   Save to Database
                 </button>
               </div>
@@ -228,23 +238,23 @@
           </div>
 
           <!-- Data Table Page -->
-          <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="px-6 py-4 border-b flex justify-between items-center bg-slate-50">
-              <h3 class="font-bold text-gray-800">Institutional Directory Records</h3>
-              <input type="text" id="searchInput" placeholder="Search records..." class="border rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-blue-800 bg-white" onkeyup="filterTable()">
+          <div class="bg-gray-900/90 rounded-xl border border-gray-800 overflow-hidden shadow-lg">
+            <div class="px-6 py-4 border-b border-gray-800 flex justify-between items-center bg-gray-950/60">
+              <h3 class="font-bold text-gray-100">Institutional Directory Records</h3>
+              <input type="text" id="searchInput" placeholder="Search records..." class="bg-gray-800 border border-gray-700 text-gray-200 rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-blue-500" onkeyup="filterTable()">
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse text-sm">
                 <thead>
-                  <tr class="bg-slate-100 text-gray-600 uppercase text-xs">
-                    <th class="p-4 border-b">Name</th>
-                    <th class="p-4 border-b">Role</th>
-                    <th class="p-4 border-b">ID / Number</th>
-                    <th class="p-4 border-b">Details</th>
-                    <th class="p-4 border-b text-right">Actions</th>
+                  <tr class="bg-gray-950/80 text-gray-400 uppercase text-xs">
+                    <th class="p-4 border-b border-gray-800">Name</th>
+                    <th class="p-4 border-b border-gray-800">Role</th>
+                    <th class="p-4 border-b border-gray-800">ID / Number</th>
+                    <th class="p-4 border-b border-gray-800">Details</th>
+                    <th class="p-4 border-b border-gray-800 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody id="profilesTableBody" class="divide-y divide-gray-100"></tbody>
+                <tbody id="profilesTableBody" class="divide-y divide-gray-800"></tbody>
               </table>
             </div>
           </div>
@@ -327,13 +337,13 @@
     if (page === 'overview') {
       overviewView.classList.remove('hidden');
       directoryView.classList.add('hidden');
-      navOverview.className = "w-full text-left flex items-center px-4 py-2.5 bg-blue-900 rounded-lg text-sm font-medium transition text-white";
-      navDirectory.className = "w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-900 rounded-lg text-sm font-medium text-blue-200 transition";
+      navOverview.className = "w-full text-left flex items-center px-4 py-2.5 bg-blue-600/20 border border-blue-500/30 rounded-lg text-sm font-medium transition text-white";
+      navDirectory.className = "w-full text-left flex items-center px-4 py-2.5 hover:bg-gray-800 rounded-lg text-sm font-medium text-gray-300 transition";
     } else if (page === 'directory') {
       overviewView.classList.add('hidden');
       directoryView.classList.remove('hidden');
-      navDirectory.className = "w-full text-left flex items-center px-4 py-2.5 bg-blue-900 rounded-lg text-sm font-medium transition text-white";
-      navOverview.className = "w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-900 rounded-lg text-sm font-medium text-blue-200 transition";
+      navDirectory.className = "w-full text-left flex items-center px-4 py-2.5 bg-blue-600/20 border border-blue-500/30 rounded-lg text-sm font-medium transition text-white";
+      navOverview.className = "w-full text-left flex items-center px-4 py-2.5 hover:bg-gray-800 rounded-lg text-sm font-medium text-gray-300 transition";
     }
   }
 
@@ -385,7 +395,6 @@
       }
     });
 
-    // Update Role Breakdown Counters & Bars
     document.getElementById('countStudents').innerText = studentCount;
     document.getElementById('countFaculty').innerText = facultyCount;
     document.getElementById('countAdmin').innerText = adminCount;
@@ -395,7 +404,6 @@
     document.getElementById('barFaculty').style.width = `${(facultyCount / total) * 100}%`;
     document.getElementById('barAdmin').style.width = `${(adminCount / total) * 100}%`;
 
-    // Update Year Level Counters & Bars
     document.getElementById('countYear1').innerText = y1;
     document.getElementById('countYear2').innerText = y2;
     document.getElementById('countYear3').innerText = y3;
@@ -414,26 +422,26 @@
     document.getElementById('statTotalCount').innerText = list.length;
 
     if (list.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">No records found.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-500">No records found.</td></tr>`;
       return;
     }
 
     list.forEach(p => {
       const deleteBtn = currentUser && currentUser.role === 'Admin'
-        ? `<button onclick="deleteProfile(${p.id})" class="text-red-600 hover:underline text-xs">Delete</button>`
-        : `<span class="text-gray-300 text-xs">-</span>`;
+        ? `<button onclick="deleteProfile(${p.id})" class="text-red-400 hover:underline text-xs">Delete</button>`
+        : `<span class="text-gray-600 text-xs">-</span>`;
 
       tbody.innerHTML += `
-        <tr class="hover:bg-slate-50">
-          <td class="p-4 font-medium text-gray-800">${p.fullName}</td>
+        <tr class="hover:bg-gray-800/40 transition">
+          <td class="p-4 font-medium text-gray-200">${p.fullName}</td>
           <td class="p-4">
             <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${
-              p.role === 'Admin' ? 'bg-purple-100 text-purple-800' :
-              p.role === 'Faculty' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
+              p.role === 'Admin' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' :
+              p.role === 'Faculty' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
             }">${p.role}</span>
           </td>
-          <td class="p-4 text-gray-600">${p.identifier}</td>
-          <td class="p-4 text-gray-600">${p.details}</td>
+          <td class="p-4 text-gray-400">${p.identifier}</td>
+          <td class="p-4 text-gray-400">${p.details}</td>
           <td class="p-4 text-right">${deleteBtn}</td>
         </tr>
       `;
