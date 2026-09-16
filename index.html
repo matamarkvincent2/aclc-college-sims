@@ -24,8 +24,8 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-700 uppercase">ID Number / Username</label>
-          <input type="text" id="loginId" required placeholder="e.g. Faculty-01 or AdminStaff" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
+          <label class="block text-xs font-semibold text-gray-700 uppercase">Username</label>
+          <input type="text" id="loginId" required placeholder="Input access username" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-700 uppercase">Password</label>
@@ -308,7 +308,7 @@
     }
 
     if (!isValid) {
-      alert('Invalid ID Number or Password for the selected portal.');
+      alert('Invalid Username or Password for the selected portal.');
       return;
     }
 
