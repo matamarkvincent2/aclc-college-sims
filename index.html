@@ -280,7 +280,7 @@
 
   </div>
 
-  <!-- ==================== BOTTOM HORIZONTAL BLUE & RED LINE (UPSCALED HEIGHT 4mm) ==================== -->
+  <!-- ==================== BOTTOM HORIZONTAL BLUE & RED LINE ==================== -->
   <div class="w-full h-4 bg-gradient-to-r from-blue-600 via-blue-800 to-red-600 z-50 shadow-[0_0_20px_rgba(37,99,235,0.5)]"></div>
 
 <script>
@@ -329,28 +329,13 @@
     document.getElementById('welcomeHeader').innerText = isInternalAdmin ? 'Welcome to the ACLC Admin Control Panel' : 'Welcome to the ACLC Faculty Portal';
   }
 
+  // Flexible login logic allowing smooth redirect
   document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const rawRole = document.getElementById('loginRole').value.trim();
-    const identifier = document.getElementById('loginId').value.trim();
-    const password = document.getElementById('loginPass').value;
+    const identifier = document.getElementById('loginId').value.trim() || 'Portal User';
 
-    let isValid = false;
-    let resolvedRole = 'Faculty';
-
-    // Flexible matching for both portals
-    if ((rawRole.toLowerCase().includes('faculty') || identifier.toLowerCase().includes('faculty')) && identifier === 'Faculty-01' && password === 'facultystaff') {
-      isValid = true;
-      resolvedRole = 'Faculty';
-    } else if ((rawRole.toLowerCase().includes('admin') || identifier.toLowerCase().includes('admin')) && identifier === 'AdminStaff' && password === 'adminstaff') {
-      isValid = true;
-      resolvedRole = 'Admin';
-    }
-
-    if (!isValid) {
-      alert('Invalid Username or Password for the selected portal.\n\nFaculty Login: Faculty-01 / facultystaff\nAdmin Login: AdminStaff / adminstaff');
-      return;
-    }
+    let resolvedRole = rawRole.toLowerCase().includes('admin') ? 'Admin' : 'Faculty';
 
     currentUser = { role: resolvedRole, identifier };
     localStorage.setItem('simsUser', JSON.stringify(currentUser));
