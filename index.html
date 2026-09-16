@@ -331,23 +331,28 @@
 
   document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    const role = document.getElementById('loginRole').value;
+    const rawRole = document.getElementById('loginRole').value.trim();
     const identifier = document.getElementById('loginId').value.trim();
     const password = document.getElementById('loginPass').value;
 
     let isValid = false;
-    if (role === 'Faculty' && identifier === 'Faculty-01' && password === 'facultystaff') {
+    let resolvedRole = 'Faculty';
+
+    // Flexible matching for both portals
+    if ((rawRole.toLowerCase().includes('faculty') || identifier.toLowerCase().includes('faculty')) && identifier === 'Faculty-01' && password === 'facultystaff') {
       isValid = true;
-    } else if (role === 'Admin' && identifier === 'AdminStaff' && password === 'adminstaff') {
+      resolvedRole = 'Faculty';
+    } else if ((rawRole.toLowerCase().includes('admin') || identifier.toLowerCase().includes('admin')) && identifier === 'AdminStaff' && password === 'adminstaff') {
       isValid = true;
+      resolvedRole = 'Admin';
     }
 
     if (!isValid) {
-      alert('Invalid Username or Password for the selected portal.');
+      alert('Invalid Username or Password for the selected portal.\n\nFaculty Login: Faculty-01 / facultystaff\nAdmin Login: AdminStaff / adminstaff');
       return;
     }
 
-    currentUser = { role, identifier };
+    currentUser = { role: resolvedRole, identifier };
     localStorage.setItem('simsUser', JSON.stringify(currentUser));
 
     applyUserPortalTheme();
