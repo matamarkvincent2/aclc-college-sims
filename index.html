@@ -13,26 +13,25 @@
     <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8 border border-slate-200">
       <div class="text-center mb-6">
         <h1 class="text-2xl font-bold text-blue-900">ACLC College of Mandaue</h1>
-        <p class="text-sm text-gray-500 mt-1">Student Information Management System</p>
       </div>
       <form id="loginForm" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-gray-700 uppercase">Select Role</label>
+          <label class="block text-xs font-semibold text-gray-700 uppercase">Select Portal</label>
           <select id="loginRole" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
             <option value="Faculty">Faculty Portal</option>
-            <option value="Admin">Admin Staff Portal</option>
+            <option value="Admin">Admin Portal</option>
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-700 uppercase">ID Number</label>
-          <input type="text" id="loginId" required placeholder="e.g. Faculty-01 or AdminStaff" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
+          <label class="block text-xs font-semibold text-gray-700 uppercase">Username</label>
+          <input type="text" id="loginId" required placeholder="Input access username" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-700 uppercase">Password</label>
           <input type="password" id="loginPass" required placeholder="Enter password" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
         </div>
         <button type="submit" class="w-full bg-blue-900 text-white font-semibold py-2.5 rounded-lg text-sm hover:bg-blue-800 transition">
-          Sign In to Dashboard
+          Sign In to Portal
         </button>
       </form>
       <div class="mt-6 text-center text-xs text-gray-400">
@@ -49,12 +48,12 @@
     <aside class="w-64 bg-blue-950 text-white flex-col justify-between hidden md:flex">
       <div>
         <div class="p-6 border-b border-blue-900">
-          <h2 class="font-bold text-lg text-white">ACLC Mandaue</h2>
-          <p id="sidebarRoleLabel" class="text-xs text-blue-300">Role: Admin</p>
+          <h2 id="sidebarPortalTitle" class="font-bold text-lg text-white">ACLC Mandaue</h2>
+          <p id="sidebarRoleLabel" class="text-xs text-blue-300">Role: Portal</p>
         </div>
         <nav class="mt-4 px-2 space-y-1">
-          <a href="#" class="flex items-center px-4 py-2.5 bg-blue-900 rounded-lg text-sm font-medium">Dashboard Overview</a>
-          <a href="#directory" class="flex items-center px-4 py-2.5 hover:bg-blue-900 rounded-lg text-sm font-medium text-blue-200">Directory & Records</a>
+          <button onclick="switchPage('overview')" id="navOverview" class="w-full text-left flex items-center px-4 py-2.5 bg-blue-900 rounded-lg text-sm font-medium transition">Dashboard Overview</button>
+          <button onclick="switchPage('directory')" id="navDirectory" class="w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-900 rounded-lg text-sm font-medium text-blue-200 transition">Directory & Records</button>
         </nav>
       </div>
       <div class="p-4 border-t border-blue-900">
@@ -70,80 +69,185 @@
       <!-- Top Navbar -->
       <header class="bg-white border-b px-6 py-4 flex justify-between items-center">
         <div>
-          <h2 id="pageTitle" class="text-xl font-bold text-gray-800">Staff Dashboard</h2>
+          <h2 id="pageTitle" class="text-xl font-bold text-gray-800">Dashboard</h2>
           <p class="text-xs text-gray-500">Welcome back, <span id="userNameDisplay">User</span></p>
         </div>
         <button onclick="logout()" class="md:hidden bg-red-600 text-white px-3 py-1.5 rounded text-xs">Logout</button>
       </header>
 
-      <!-- Dashboard Stats Cards -->
+      <!-- Main Dynamic Content Views -->
       <main class="p-6 space-y-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-            <h4 class="text-xs font-semibold text-gray-400 uppercase">Total Profiles</h4>
-            <p id="statTotalCount" class="text-2xl font-bold text-blue-900 mt-1">0</p>
+
+        <!-- ================= PAGE 1: OVERVIEW VIEW ================= -->
+        <div id="viewOverview" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+              <h4 class="text-xs font-semibold text-gray-400 uppercase">Total Profiles</h4>
+              <p id="statTotalCount" class="text-2xl font-bold text-blue-900 mt-1">0</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+              <h4 class="text-xs font-semibold text-gray-400 uppercase">Active Portal</h4>
+              <p id="statActiveRole" class="text-2xl font-bold text-green-700 mt-1">Portal</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+              <h4 class="text-xs font-semibold text-gray-400 uppercase">System Status</h4>
+              <p class="text-2xl font-bold text-emerald-600 mt-1">Online</p>
+            </div>
           </div>
-          <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-            <h4 class="text-xs font-semibold text-gray-400 uppercase">Active Role View</h4>
-            <p id="statActiveRole" class="text-2xl font-bold text-green-700 mt-1">Faculty</p>
+
+          <!-- Role Breakdown Analytics -->
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-5">
+            <div>
+              <h3 class="text-md font-bold text-gray-800">Database Role Population Analytics</h3>
+              <p class="text-xs text-gray-500">Count of registered students, faculty members, and admin staff</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-xs font-semibold text-gray-500 uppercase">Students</span>
+                  <span id="countStudents" class="text-lg font-bold text-blue-900">0</span>
+                </div>
+                <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                  <div id="barStudents" class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-xs font-semibold text-gray-500 uppercase">Faculty Staff</span>
+                  <span id="countFaculty" class="text-lg font-bold text-green-700">0</span>
+                </div>
+                <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                  <div id="barFaculty" class="bg-green-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-xs font-semibold text-gray-500 uppercase">Admin Staff</span>
+                  <span id="countAdmin" class="text-lg font-bold text-purple-700">0</span>
+                </div>
+                <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                  <div id="barAdmin" class="bg-purple-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-            <h4 class="text-xs font-semibold text-gray-400 uppercase">System Status</h4>
-            <p class="text-2xl font-bold text-emerald-600 mt-1">Online</p>
+
+          <!-- Student Year Level Analytics with Visual Bars -->
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-5">
+            <div>
+              <h3 class="text-md font-bold text-gray-800">Student Year Level Analytics</h3>
+              <p class="text-xs text-gray-500">Real-time population breakdown across academic year levels</p>
+            </div>
+            
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                  <span>1st Year Students</span>
+                  <span id="countYear1">0</span>
+                </div>
+                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                  <div id="barYear1" class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                  <span>2nd Year Students</span>
+                  <span id="countYear2">0</span>
+                </div>
+                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                  <div id="barYear2" class="bg-indigo-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                  <span>3rd Year Students</span>
+                  <span id="countYear3">0</span>
+                </div>
+                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                  <div id="barYear3" class="bg-violet-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                  <span>4th Year Students</span>
+                  <span id="countYear4">0</span>
+                </div>
+                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                  <div id="barYear4" class="bg-purple-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+            <h3 id="welcomeHeader" class="text-lg font-bold text-gray-800 mb-2">Welcome to the Portal</h3>
+            <p class="text-sm text-gray-600">Use the sidebar navigation to view and manage institutional database entries, browse student & staff records, or register new credentials.</p>
+            <div class="mt-6 flex gap-3">
+              <button onclick="switchPage('directory')" class="bg-blue-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">Go to Directory & Records</button>
+            </div>
           </div>
         </div>
 
-        <!-- Add New Record Form (Visible to both Faculty and Admin) -->
-        <div id="adminFormContainer" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-          <h3 class="font-bold text-gray-800 mb-4">Register / Add New Directory Record</h3>
-          <form id="profileForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
-              <label class="block text-xs font-medium text-gray-600">Full Name</label>
-              <input type="text" id="fullName" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="Juan Dela Cruz">
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-600">Role</label>
-              <select id="role" class="w-full mt-1 border rounded-lg p-2 text-sm">
-                <option value="Student">Student</option>
-                <option value="Faculty">Faculty</option>
-                <option value="Admin">Admin</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-600">ID / Number</label>
-              <input type="text" id="identifier" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="2026-0002">
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-600">Details / Course / Dept</label>
-              <input type="text" id="details" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="BSIT - 3rd Year">
-            </div>
-            <div class="md:col-span-4 flex justify-end">
-              <button type="submit" class="bg-blue-900 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">
-                Save to Database
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <!-- Data Table -->
-        <div id="directory" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-          <div class="px-6 py-4 border-b flex justify-between items-center">
-            <h3 class="font-bold text-gray-800">Directory Records</h3>
-            <input type="text" id="searchInput" placeholder="Search records..." class="border rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-blue-800" onkeyup="filterTable()">
+        <!-- ================= PAGE 2: DIRECTORY & RECORDS VIEW ================= -->
+        <div id="viewDirectory" class="hidden space-y-6">
+          <!-- Add New Record Form -->
+          <div id="adminFormContainer" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            <h3 class="font-bold text-gray-800 mb-4">Register / Add New Directory Record</h3>
+            <form id="profileForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label class="block text-xs font-medium text-gray-600">Full Name</label>
+                <input type="text" id="fullName" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="TESTING">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600">Role</label>
+                <select id="role" class="w-full mt-1 border rounded-lg p-2 text-sm">
+                  <option value="Student">Student</option>
+                  <option value="Faculty">Faculty</option>
+                  <option value="Admin">Admin</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600">ID / Number</label>
+                <input type="text" id="identifier" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="2026-0002">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600">Details / Course / Dept</label>
+                <input type="text" id="details" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="BSIT - 3rd Year">
+              </div>
+              <div class="md:col-span-4 flex justify-end">
+                <button type="submit" class="bg-blue-900 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">
+                  Save to Database
+                </button>
+              </div>
+            </form>
           </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-sm">
-              <thead>
-                <tr class="bg-slate-50 text-gray-500 uppercase text-xs">
-                  <th class="p-4 border-b">Name</th>
-                  <th class="p-4 border-b">Role</th>
-                  <th class="p-4 border-b">ID / Number</th>
-                  <th class="p-4 border-b">Details</th>
-                  <th class="p-4 border-b text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="profilesTableBody" class="divide-y divide-gray-100"></tbody>
-            </table>
+
+          <!-- Data Table Page -->
+          <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 border-b flex justify-between items-center bg-slate-50">
+              <h3 class="font-bold text-gray-800">Institutional Directory Records</h3>
+              <input type="text" id="searchInput" placeholder="Search records..." class="border rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-blue-800 bg-white" onkeyup="filterTable()">
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                  <tr class="bg-slate-100 text-gray-600 uppercase text-xs">
+                    <th class="p-4 border-b">Name</th>
+                    <th class="p-4 border-b">Role</th>
+                    <th class="p-4 border-b">ID / Number</th>
+                    <th class="p-4 border-b">Details</th>
+                    <th class="p-4 border-b text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="profilesTableBody" class="divide-y divide-gray-100"></tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -166,20 +270,28 @@
     }
 
     if (currentUser && currentUser.role && currentUser.identifier) {
-      document.getElementById('loginSection').classList.add('hidden');
-      document.getElementById('dashboardSection').classList.remove('hidden');
-      document.getElementById('dashboardSection').classList.add('flex');
-
-      document.getElementById('sidebarRoleLabel').innerText = `Role: ${currentUser.role}`;
-      document.getElementById('userNameDisplay').innerText = currentUser.identifier;
-      document.getElementById('statActiveRole').innerText = currentUser.role;
-
+      applyUserPortalTheme();
       loadProfiles();
     } else {
       localStorage.removeItem('simsUser');
       logout();
     }
   });
+
+  function applyUserPortalTheme() {
+    document.getElementById('loginSection').classList.add('hidden');
+    document.getElementById('dashboardSection').classList.remove('hidden');
+    document.getElementById('dashboardSection').classList.add('flex');
+
+    const isInternalAdmin = currentUser.role === 'Admin';
+
+    document.getElementById('sidebarPortalTitle').innerText = isInternalAdmin ? 'ACLC Admin Portal' : 'ACLC Faculty Portal';
+    document.getElementById('sidebarRoleLabel').innerText = `Role: ${currentUser.role}`;
+    document.getElementById('userNameDisplay').innerText = currentUser.identifier;
+    document.getElementById('statActiveRole').innerText = currentUser.role;
+    document.getElementById('pageTitle').innerText = isInternalAdmin ? 'Admin Management Dashboard' : 'Faculty Portal Dashboard';
+    document.getElementById('welcomeHeader').innerText = isInternalAdmin ? 'Welcome to the ACLC Admin Control Panel' : 'Welcome to the ACLC Faculty Portal';
+  }
 
   document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
@@ -195,23 +307,36 @@
     }
 
     if (!isValid) {
-      alert('Invalid ID Number or Password for the selected role.');
+      alert('Invalid Username or Password for the selected portal.');
       return;
     }
 
     currentUser = { role, identifier };
     localStorage.setItem('simsUser', JSON.stringify(currentUser));
 
-    document.getElementById('loginSection').classList.add('hidden');
-    document.getElementById('dashboardSection').classList.remove('hidden');
-    document.getElementById('dashboardSection').classList.add('flex');
-
-    document.getElementById('sidebarRoleLabel').innerText = `Role: ${role}`;
-    document.getElementById('userNameDisplay').innerText = identifier;
-    document.getElementById('statActiveRole').innerText = role;
-
+    applyUserPortalTheme();
     loadProfiles();
+    switchPage('overview');
   });
+
+  function switchPage(page) {
+    const overviewView = document.getElementById('viewOverview');
+    const directoryView = document.getElementById('viewDirectory');
+    const navOverview = document.getElementById('navOverview');
+    const navDirectory = document.getElementById('navDirectory');
+
+    if (page === 'overview') {
+      overviewView.classList.remove('hidden');
+      directoryView.classList.add('hidden');
+      navOverview.className = "w-full text-left flex items-center px-4 py-2.5 bg-blue-900 rounded-lg text-sm font-medium transition text-white";
+      navDirectory.className = "w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-900 rounded-lg text-sm font-medium text-blue-200 transition";
+    } else if (page === 'directory') {
+      overviewView.classList.add('hidden');
+      directoryView.classList.remove('hidden');
+      navDirectory.className = "w-full text-left flex items-center px-4 py-2.5 bg-blue-900 rounded-lg text-sm font-medium transition text-white";
+      navOverview.className = "w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-900 rounded-lg text-sm font-medium text-blue-200 transition";
+    }
+  }
 
   function logout() {
     currentUser = null;
@@ -226,6 +351,62 @@
     const data = await res.json();
     allProfiles = data.profiles;
     renderTable(allProfiles);
+    updateAnalytics(allProfiles);
+  }
+
+  function updateAnalytics(list) {
+    let studentCount = 0;
+    let facultyCount = 0;
+    let adminCount = 0;
+
+    let y1 = 0, y2 = 0, y3 = 0, y4 = 0;
+
+    list.forEach(p => {
+      const roleLower = (p.role || '').toLowerCase();
+      const detailsLower = (p.details || '').toLowerCase();
+
+      if (roleLower === 'student') {
+        studentCount++;
+      } else if (roleLower === 'faculty') {
+        facultyCount++;
+      } else if (roleLower === 'admin') {
+        adminCount++;
+      }
+
+      if (roleLower === 'student' || detailsLower.includes('year') || detailsLower.includes('bsit') || detailsLower.includes('bsba')) {
+        if (detailsLower.includes('1st') || detailsLower.includes('first') || detailsLower.includes('1 year')) {
+          y1++;
+        } else if (detailsLower.includes('2nd') || detailsLower.includes('second') || detailsLower.includes('2 year')) {
+          y2++;
+        } else if (detailsLower.includes('3rd') || detailsLower.includes('third') || detailsLower.includes('3 year')) {
+          y3++;
+        } else if (detailsLower.includes('4th') || detailsLower.includes('fourth') || detailsLower.includes('4 year')) {
+          y4++;
+        }
+      }
+    });
+
+    // Update Role Breakdown Counters & Bars
+    document.getElementById('countStudents').innerText = studentCount;
+    document.getElementById('countFaculty').innerText = facultyCount;
+    document.getElementById('countAdmin').innerText = adminCount;
+
+    const total = Math.max(list.length, 1);
+    document.getElementById('barStudents').style.width = `${(studentCount / total) * 100}%`;
+    document.getElementById('barFaculty').style.width = `${(facultyCount / total) * 100}%`;
+    document.getElementById('barAdmin').style.width = `${(adminCount / total) * 100}%`;
+
+    // Update Year Level Counters & Bars
+    document.getElementById('countYear1').innerText = y1;
+    document.getElementById('countYear2').innerText = y2;
+    document.getElementById('countYear3').innerText = y3;
+    document.getElementById('countYear4').innerText = y4;
+
+    const maxYearCount = Math.max(y1, y2, y3, y4, 1);
+    document.getElementById('barYear1').style.width = `${(y1 / maxYearCount) * 100}%`;
+    document.getElementById('barYear2').style.width = `${(y2 / maxYearCount) * 100}%`;
+    document.getElementById('barYear3').style.width = `${(y3 / maxYearCount) * 100}%`;
+    document.getElementById('barYear4').style.width = `${(y4 / maxYearCount) * 100}%`;
   }
 
   function renderTable(list) {
