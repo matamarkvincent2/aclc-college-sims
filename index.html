@@ -7,273 +7,271 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/socket.io/socket.io.js"></script>
 </head>
-<body class="bg-slate-100 min-h-screen font-sans relative">
+<body class="bg-slate-100 min-h-screen font-sans relative flex flex-col justify-between overflow-x-hidden">
 
-  <!-- ==================== TOP HORIZONTAL BLUE & RED LINE ==================== -->
-  <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue-700 via-blue-900 to-red-600 z-50"></div>
-
-  <!-- ==================== LOGIN SECTION ==================== -->
-  <div id="loginSection" class="flex items-center justify-center min-h-screen p-4">
-    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-slate-200 relative">
-      
-      <!-- Logo positioned at the upper-left corner of the login card -->
-      <div class="absolute top-6 left-6 w-12 h-12 rounded-full p-0.5 border border-blue-700 shadow-sm flex items-center justify-center bg-white">
-        <img src="logo.png" alt="ACLC Mandaue Logo" class="w-full h-full object-contain rounded-full">
-      </div>
-
-      <div class="text-center mb-6 pt-6">
-        <h1 class="text-2xl font-black text-blue-900 tracking-tight">ACLC College of Mandaue</h1>
-        <p class="text-xs font-semibold text-red-600 uppercase tracking-widest mt-0.5">Mandaue City</p>
-      </div>
-
-      <form id="loginForm" class="space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Select Portal</label>
-          <select id="loginRole" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-700 outline-none bg-slate-50">
-            <option value="Faculty">Faculty Portal</option>
-            <option value="Admin">Admin Portal</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Username</label>
-          <input type="text" id="loginId" required placeholder="Input access username" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-700 outline-none bg-slate-50">
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Password</label>
-          <input type="password" id="loginPass" required placeholder="Enter password" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-700 outline-none bg-slate-50">
-        </div>
-        <button type="submit" class="w-full bg-blue-900 text-white font-bold py-3 rounded-lg text-sm hover:bg-blue-800 transition shadow-md">
-          Sign In to Portal
-        </button>
-      </form>
-
-      <div class="mt-6 text-center text-xs text-gray-400 border-t pt-4">
-        Faculty Login: <code class="text-blue-800 font-semibold">Faculty-01</code> / <code class="text-blue-800 font-semibold">facultystaff</code><br>
-        Admin Login: <code class="text-blue-800 font-semibold">AdminStaff</code> / <code class="text-blue-800 font-semibold">adminstaff</code>
-      </div>
-    </div>
+  <!-- ==================== FIXED LOGO (UPPER LEFT CORNER OUTSIDE UI) ==================== -->
+  <div class="absolute top-4 left-4 z-50 flex items-center space-x-2 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm border border-slate-200">
+    <img src="logo.png" alt="ACLC Mandaue Logo" class="w-8 h-8 rounded-full object-contain">
+    <span class="text-xs font-bold text-blue-900 hidden sm:inline">ACLC Mandaue</span>
   </div>
 
-  <!-- ==================== DASHBOARD SECTION ==================== -->
-  <div id="dashboardSection" class="hidden flex h-screen overflow-hidden pt-1.5">
-    
-    <!-- Sidebar -->
-    <aside class="w-64 bg-blue-950 text-white flex-col justify-between hidden md:flex border-r border-blue-900">
-      <div>
-        <div class="p-6 border-b border-blue-900 flex items-center space-x-3">
-          <!-- Logo in Sidebar Upper-Left Header -->
-          <img src="logo.png" alt="Logo" class="w-10 h-10 rounded-full bg-white object-contain p-0.5 border border-blue-700 shadow-sm">
-          <div>
-            <h2 id="sidebarPortalTitle" class="font-bold text-sm text-white leading-tight">ACLC Mandaue</h2>
-            <p id="sidebarRoleLabel" class="text-[10px] text-red-400 font-semibold uppercase tracking-wider">Role: Portal</p>
-          </div>
-        </div>
-        <nav class="mt-4 px-2 space-y-1">
-          <button onclick="switchPage('overview')" id="navOverview" class="w-full text-left flex items-center px-4 py-2.5 bg-blue-900 rounded-lg text-sm font-medium transition">Dashboard Overview</button>
-          <button onclick="switchPage('directory')" id="navDirectory" class="w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-950 rounded-lg text-sm font-medium text-blue-200 transition">Directory & Records</button>
-        </nav>
-      </div>
-      <div class="p-4 border-t border-blue-900">
-        <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-300 hover:bg-blue-900 rounded-lg transition font-medium">
-          Sign Out
-        </button>
-      </div>
-    </aside>
+  <!-- Wrapper for main content to push the bottom line down -->
+  <div class="flex-1 flex flex-col">
 
-    <!-- Main Content Area -->
-    <div class="flex-1 flex flex-col overflow-y-auto">
+    <!-- ==================== LOGIN SECTION ==================== -->
+    <div id="loginSection" class="flex items-center justify-center min-h-screen p-4">
+      <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-slate-200 relative">
+
+        <div class="text-center mb-6 pt-4">
+          <h1 class="text-2xl font-black text-blue-900 tracking-tight">ACLC College of Mandaue</h1>
+          <p class="text-xs font-semibold text-red-600 uppercase tracking-widest mt-0.5">Mandaue City</p>
+        </div>
+
+        <form id="loginForm" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Select Portal</label>
+            <select id="loginRole" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-700 outline-none bg-slate-50">
+              <option value="Faculty">Faculty Portal</option>
+              <option value="Admin">Admin Portal</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Username</label>
+            <input type="text" id="loginId" required placeholder="Input access username" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-700 outline-none bg-slate-50">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Password</label>
+            <input type="password" id="loginPass" required placeholder="Enter password" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-700 outline-none bg-slate-50">
+          </div>
+          <button type="submit" class="w-full bg-blue-900 text-white font-bold py-3 rounded-lg text-sm hover:bg-blue-800 transition shadow-md">
+            Sign In to Portal
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================== DASHBOARD SECTION ==================== -->
+    <div id="dashboardSection" class="hidden flex h-screen overflow-hidden">
       
-      <!-- Top Navbar -->
-      <header class="bg-white border-b px-6 py-4 flex justify-between items-center shadow-xs">
-        <div class="flex items-center space-x-3">
-          <img src="logo.png" alt="Logo" class="w-9 h-9 rounded-full md:hidden border border-blue-800 object-contain p-0.5">
-          <div>
-            <h2 id="pageTitle" class="text-xl font-bold text-gray-800">Dashboard</h2>
-            <p class="text-xs text-gray-500">Welcome back, <span id="userNameDisplay" class="font-semibold text-blue-900">User</span></p>
-          </div>
-        </div>
-        <button onclick="logout()" class="md:hidden bg-red-600 text-white px-3 py-1.5 rounded text-xs font-semibold">Logout</button>
-      </header>
-
-      <!-- Main Dynamic Content Views -->
-      <main class="p-6 space-y-6">
-
-        <!-- ================= PAGE 1: OVERVIEW VIEW ================= -->
-        <div id="viewOverview" class="space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 border-l-4 border-l-blue-900">
-              <h4 class="text-xs font-bold text-gray-400 uppercase">Total Profiles</h4>
-              <p id="statTotalCount" class="text-2xl font-black text-blue-900 mt-1">0</p>
-            </div>
-            <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 border-l-4 border-l-red-600">
-              <h4 class="text-xs font-bold text-gray-400 uppercase">Active Portal</h4>
-              <p id="statActiveRole" class="text-2xl font-black text-red-600 mt-1">Portal</p>
-            </div>
-            <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 border-l-4 border-l-emerald-600">
-              <h4 class="text-xs font-bold text-gray-400 uppercase">System Status</h4>
-              <p class="text-2xl font-black text-emerald-600 mt-1">Online</p>
-            </div>
-          </div>
-
-          <!-- Role Breakdown Analytics -->
-          <div class="bg-white p-6 rounded-xl shadow-xs border border-slate-200 space-y-5">
+      <!-- Sidebar -->
+      <aside class="w-64 bg-blue-950 text-white flex-col justify-between hidden md:flex border-r border-blue-900">
+        <div>
+          <div class="p-6 border-b border-blue-900 flex items-center space-x-3">
             <div>
-              <h3 class="text-md font-bold text-gray-800">Database Role Population Analytics</h3>
-              <p class="text-xs text-gray-500">Count of registered students, faculty members, and admin staff</p>
+              <h2 id="sidebarPortalTitle" class="font-bold text-sm text-white leading-tight">ACLC Mandaue</h2>
+              <p id="sidebarRoleLabel" class="text-[10px] text-red-400 font-semibold uppercase tracking-wider">Role: Portal</p>
             </div>
-            
+          </div>
+          <nav class="mt-4 px-2 space-y-1">
+            <button onclick="switchPage('overview')" id="navOverview" class="w-full text-left flex items-center px-4 py-2.5 bg-blue-900 rounded-lg text-sm font-medium transition">Dashboard Overview</button>
+            <button onclick="switchPage('directory')" id="navDirectory" class="w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-950 rounded-lg text-sm font-medium text-blue-200 transition">Directory & Records</button>
+          </nav>
+        </div>
+        <div class="p-4 border-t border-blue-900">
+          <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-300 hover:bg-blue-900 rounded-lg transition font-medium">
+            Sign Out
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <div class="flex-1 flex flex-col overflow-y-auto">
+        
+        <!-- Top Navbar -->
+        <header class="bg-white border-b px-6 py-4 flex justify-between items-center shadow-xs">
+          <div class="flex items-center space-x-3">
+            <div>
+              <h2 id="pageTitle" class="text-xl font-bold text-gray-800">Dashboard</h2>
+              <p class="text-xs text-gray-500">Welcome back, <span id="userNameDisplay" class="font-semibold text-blue-900">User</span></p>
+            </div>
+          </div>
+          <button onclick="logout()" class="md:hidden bg-red-600 text-white px-3 py-1.5 rounded text-xs font-semibold">Logout</button>
+        </header>
+
+        <!-- Main Dynamic Content Views -->
+        <main class="p-6 space-y-6">
+
+          <!-- ================= PAGE 1: OVERVIEW VIEW ================= -->
+          <div id="viewOverview" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                <div class="flex justify-between items-center mb-2">
-                  <span class="text-xs font-semibold text-gray-500 uppercase">Students</span>
-                  <span id="countStudents" class="text-lg font-bold text-blue-900">0</span>
+              <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 border-l-4 border-l-blue-900">
+                <h4 class="text-xs font-bold text-gray-400 uppercase">Total Profiles</h4>
+                <p id="statTotalCount" class="text-2xl font-black text-blue-900 mt-1">0</p>
+              </div>
+              <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 border-l-4 border-l-red-600">
+                <h4 class="text-xs font-bold text-gray-400 uppercase">Active Portal</h4>
+                <p id="statActiveRole" class="text-2xl font-black text-red-600 mt-1">Portal</p>
+              </div>
+              <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 border-l-4 border-l-emerald-600">
+                <h4 class="text-xs font-bold text-gray-400 uppercase">System Status</h4>
+                <p class="text-2xl font-black text-emerald-600 mt-1">Online</p>
+              </div>
+            </div>
+
+            <!-- Role Breakdown Analytics -->
+            <div class="bg-white p-6 rounded-xl shadow-xs border border-slate-200 space-y-5">
+              <div>
+                <h3 class="text-md font-bold text-gray-800">Database Role Population Analytics</h3>
+                <p class="text-xs text-gray-500">Count of registered students, faculty members, and admin staff</p>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-semibold text-gray-500 uppercase">Students</span>
+                    <span id="countStudents" class="text-lg font-bold text-blue-900">0</span>
+                  </div>
+                  <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                    <div id="barStudents" class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                  </div>
                 </div>
-                <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                  <div id="barStudents" class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-semibold text-gray-500 uppercase">Faculty Staff</span>
+                    <span id="countFaculty" class="text-lg font-bold text-green-700">0</span>
+                  </div>
+                  <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                    <div id="barFaculty" class="bg-green-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                  </div>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-semibold text-gray-500 uppercase">Admin Staff</span>
+                    <span id="countAdmin" class="text-lg font-bold text-purple-700">0</span>
+                  </div>
+                  <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                    <div id="barAdmin" class="bg-purple-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                <div class="flex justify-between items-center mb-2">
-                  <span class="text-xs font-semibold text-gray-500 uppercase">Faculty Staff</span>
-                  <span id="countFaculty" class="text-lg font-bold text-green-700">0</span>
+            <!-- Student Year Level Analytics with Visual Bars -->
+            <div class="bg-white p-6 rounded-xl shadow-xs border border-slate-200 space-y-5">
+              <div>
+                <h3 class="text-md font-bold text-gray-800">Student Year Level Analytics</h3>
+                <p class="text-xs text-gray-500">Real-time population breakdown across academic year levels</p>
+              </div>
+              
+              <div class="space-y-4">
+                <div>
+                  <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                    <span>1st Year Students</span>
+                    <span id="countYear1">0</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                    <div id="barYear1" class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                  </div>
                 </div>
-                <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                  <div id="barFaculty" class="bg-green-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+
+                <div>
+                  <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                    <span>2nd Year Students</span>
+                    <span id="countYear2">0</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                    <div id="barYear2" class="bg-indigo-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                    <span>3rd Year Students</span>
+                    <span id="countYear3">0</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                    <div id="barYear3" class="bg-violet-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                    <span>4th Year Students</span>
+                    <span id="countYear4">0</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                    <div id="barYear4" class="bg-red-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                <div class="flex justify-between items-center mb-2">
-                  <span class="text-xs font-semibold text-gray-500 uppercase">Admin Staff</span>
-                  <span id="countAdmin" class="text-lg font-bold text-purple-700">0</span>
-                </div>
-                <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                  <div id="barAdmin" class="bg-purple-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                </div>
+            <div class="bg-white p-8 rounded-xl shadow-xs border border-slate-200 flex flex-col items-start">
+              <h3 id="welcomeHeader" class="text-lg font-bold text-gray-800 mb-2">Welcome to the Portal</h3>
+              <p class="text-sm text-gray-600">Use the sidebar navigation to view and manage institutional database entries, browse student & staff records, or register new credentials in real-time.</p>
+              <div class="mt-6">
+                <button onclick="switchPage('directory')" class="bg-blue-900 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-800 transition">Go to Directory & Records</button>
               </div>
             </div>
           </div>
 
-          <!-- Student Year Level Analytics with Visual Bars -->
-          <div class="bg-white p-6 rounded-xl shadow-xs border border-slate-200 space-y-5">
-            <div>
-              <h3 class="text-md font-bold text-gray-800">Student Year Level Analytics</h3>
-              <p class="text-xs text-gray-500">Real-time population breakdown across academic year levels</p>
+          <!-- ================= PAGE 2: DIRECTORY & RECORDS VIEW ================= -->
+          <div id="viewDirectory" class="hidden space-y-6">
+            <!-- Add New Record Form -->
+            <div id="adminFormContainer" class="bg-white p-6 rounded-xl shadow-xs border border-slate-200">
+              <h3 class="font-bold text-gray-800 mb-4">Register / Add New Directory Record</h3>
+              <form id="profileForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                  <label class="block text-xs font-medium text-gray-600">Full Name</label>
+                  <input type="text" id="fullName" required class="w-full mt-1 border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-700 outline-none" placeholder="TESTING">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-600">Role</label>
+                  <select id="role" class="w-full mt-1 border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-700 outline-none">
+                    <option value="Student">Student</option>
+                    <option value="Faculty">Faculty</option>
+                    <option value="Admin">Admin</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-600">ID / Number</label>
+                  <input type="text" id="identifier" required class="w-full mt-1 border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-700 outline-none" placeholder="2026-0002">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-600">Details / Course / Dept</label>
+                  <input type="text" id="details" required class="w-full mt-1 border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-700 outline-none" placeholder="BSIT - 3rd Year">
+                </div>
+                <div class="md:col-span-4 flex justify-end">
+                  <button type="submit" class="bg-blue-900 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-800 transition shadow-sm">
+                    Save to Database
+                  </button>
+                </div>
+              </form>
             </div>
-            
-            <div class="space-y-4">
-              <div>
-                <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
-                  <span>1st Year Students</span>
-                  <span id="countYear1">0</span>
-                </div>
-                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                  <div id="barYear1" class="bg-blue-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                </div>
-              </div>
 
-              <div>
-                <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
-                  <span>2nd Year Students</span>
-                  <span id="countYear2">0</span>
-                </div>
-                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                  <div id="barYear2" class="bg-indigo-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                </div>
+            <!-- Data Table Page -->
+            <div class="bg-white rounded-xl shadow-xs border border-slate-200 overflow-hidden">
+              <div class="px-6 py-4 border-b flex justify-between items-center bg-slate-50">
+                <h3 class="font-bold text-gray-800">Institutional Directory Records</h3>
+                <input type="text" id="searchInput" placeholder="Search records..." class="border rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-blue-700 bg-white" onkeyup="filterTable()">
               </div>
-
-              <div>
-                <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
-                  <span>3rd Year Students</span>
-                  <span id="countYear3">0</span>
-                </div>
-                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                  <div id="barYear3" class="bg-violet-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                  <thead>
+                    <tr class="bg-slate-100 text-gray-600 uppercase text-xs">
+                      <th class="p-4 border-b">Name</th>
+                      <th class="p-4 border-b">Role</th>
+                      <th class="p-4 border-b">ID / Number</th>
+                      <th class="p-4 border-b">Details</th>
+                      <th class="p-4 border-b text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="profilesTableBody" class="divide-y divide-gray-100"></tbody>
+                </table>
               </div>
-
-              <div>
-                <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
-                  <span>4th Year Students</span>
-                  <span id="countYear4">0</span>
-                </div>
-                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                  <div id="barYear4" class="bg-red-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white p-8 rounded-xl shadow-xs border border-slate-200 flex flex-col items-start">
-            <h3 id="welcomeHeader" class="text-lg font-bold text-gray-800 mb-2">Welcome to the Portal</h3>
-            <p class="text-sm text-gray-600">Use the sidebar navigation to view and manage institutional database entries, browse student & staff records, or register new credentials in real-time.</p>
-            <div class="mt-6">
-              <button onclick="switchPage('directory')" class="bg-blue-900 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-800 transition">Go to Directory & Records</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- ================= PAGE 2: DIRECTORY & RECORDS VIEW ================= -->
-        <div id="viewDirectory" class="hidden space-y-6">
-          <!-- Add New Record Form -->
-          <div id="adminFormContainer" class="bg-white p-6 rounded-xl shadow-xs border border-slate-200">
-            <h3 class="font-bold text-gray-800 mb-4">Register / Add New Directory Record</h3>
-            <form id="profileForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div>
-                <label class="block text-xs font-medium text-gray-600">Full Name</label>
-                <input type="text" id="fullName" required class="w-full mt-1 border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-700 outline-none" placeholder="TESTING">
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-gray-600">Role</label>
-                <select id="role" class="w-full mt-1 border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-700 outline-none">
-                  <option value="Student">Student</option>
-                  <option value="Faculty">Faculty</option>
-                  <option value="Admin">Admin</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-gray-600">ID / Number</label>
-                <input type="text" id="identifier" required class="w-full mt-1 border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-700 outline-none" placeholder="2026-0002">
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-gray-600">Details / Course / Dept</label>
-                <input type="text" id="details" required class="w-full mt-1 border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-700 outline-none" placeholder="BSIT - 3rd Year">
-              </div>
-              <div class="md:col-span-4 flex justify-end">
-                <button type="submit" class="bg-blue-900 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-800 transition shadow-sm">
-                  Save to Database
-                </button>
-              </div>
-            </form>
-          </div>
-
-          <!-- Data Table Page -->
-          <div class="bg-white rounded-xl shadow-xs border border-slate-200 overflow-hidden">
-            <div class="px-6 py-4 border-b flex justify-between items-center bg-slate-50">
-              <h3 class="font-bold text-gray-800">Institutional Directory Records</h3>
-              <input type="text" id="searchInput" placeholder="Search records..." class="border rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-blue-700 bg-white" onkeyup="filterTable()">
-            </div>
-            <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse text-sm">
-                <thead>
-                  <tr class="bg-slate-100 text-gray-600 uppercase text-xs">
-                    <th class="p-4 border-b">Name</th>
-                    <th class="p-4 border-b">Role</th>
-                    <th class="p-4 border-b">ID / Number</th>
-                    <th class="p-4 border-b">Details</th>
-                    <th class="p-4 border-b text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="profilesTableBody" class="divide-y divide-gray-100"></tbody>
-              </table>
             </div>
           </div>
-        </div>
 
-      </main>
+        </main>
+      </div>
     </div>
+
   </div>
+
+  <!-- ==================== BOTTOM HORIZONTAL BLUE & RED LINE ==================== -->
+  <div class="w-full h-1.5 bg-gradient-to-r from-blue-700 via-blue-900 to-red-600 z-50"></div>
 
 <script>
   let currentUser = null;
