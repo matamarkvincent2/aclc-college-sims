@@ -3,61 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ACLC College of Mandaue - SIMS</title>
+  <title>ACLC College of Mandaue</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/socket.io/socket.io.js"></script>
 </head>
-<body class="bg-slate-100 min-h-screen font-sans">
+<body class="bg-slate-100 min-h-screen font-sans relative">
+
+  <!-- ==================== TOP HORIZONTAL BLUE & RED LINE ==================== -->
+  <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue-700 via-blue-900 to-red-600 z-50"></div>
 
   <!-- ==================== LOGIN SECTION ==================== -->
   <div id="loginSection" class="flex items-center justify-center min-h-screen p-4">
-    <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8 border border-slate-200">
-      <div class="text-center mb-6">
-        <h1 class="text-2xl font-bold text-blue-900">ACLC College of Mandaue</h1>
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-slate-200 relative">
+      
+      <!-- Logo positioned at the upper-left corner of the login card -->
+      <div class="absolute top-6 left-6 w-12 h-12 rounded-full p-0.5 border border-blue-700 shadow-sm flex items-center justify-center bg-white">
+        <img src="logo.png" alt="ACLC Mandaue Logo" class="w-full h-full object-contain rounded-full">
       </div>
+
+      <div class="text-center mb-6 pt-6">
+        <h1 class="text-2xl font-black text-blue-900 tracking-tight">ACLC College of Mandaue</h1>
+        <p class="text-xs font-semibold text-red-600 uppercase tracking-widest mt-0.5">Mandaue City</p>
+      </div>
+
       <form id="loginForm" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-gray-700 uppercase">Select Portal</label>
-          <select id="loginRole" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Select Portal</label>
+          <select id="loginRole" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-700 outline-none bg-slate-50">
             <option value="Faculty">Faculty Portal</option>
             <option value="Admin">Admin Portal</option>
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-700 uppercase">Username</label>
-          <input type="text" id="loginId" required placeholder="Input access username" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Username</label>
+          <input type="text" id="loginId" required placeholder="Input access username" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-700 outline-none bg-slate-50">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-700 uppercase">Password</label>
-          <input type="password" id="loginPass" required placeholder="Enter password" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-800 outline-none">
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Password</label>
+          <input type="password" id="loginPass" required placeholder="Enter password" class="w-full mt-1 border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-700 outline-none bg-slate-50">
         </div>
-        <button type="submit" class="w-full bg-blue-900 text-white font-semibold py-2.5 rounded-lg text-sm hover:bg-blue-800 transition">
+        <button type="submit" class="w-full bg-blue-900 text-white font-bold py-3 rounded-lg text-sm hover:bg-blue-800 transition shadow-md">
           Sign In to Portal
         </button>
       </form>
-      <div class="mt-6 text-center text-xs text-gray-400">
-        Faculty Login: <code>Faculty-01</code> / <code>facultystaff</code><br>
-        Admin Login: <code>AdminStaff</code> / <code>adminstaff</code>
+
+      <div class="mt-6 text-center text-xs text-gray-400 border-t pt-4">
+        Faculty Login: <code class="text-blue-800 font-semibold">Faculty-01</code> / <code class="text-blue-800 font-semibold">facultystaff</code><br>
+        Admin Login: <code class="text-blue-800 font-semibold">AdminStaff</code> / <code class="text-blue-800 font-semibold">adminstaff</code>
       </div>
     </div>
   </div>
 
   <!-- ==================== DASHBOARD SECTION ==================== -->
-  <div id="dashboardSection" class="hidden flex h-screen overflow-hidden">
+  <div id="dashboardSection" class="hidden flex h-screen overflow-hidden pt-1.5">
     
     <!-- Sidebar -->
-    <aside class="w-64 bg-blue-950 text-white flex-col justify-between hidden md:flex">
+    <aside class="w-64 bg-blue-950 text-white flex-col justify-between hidden md:flex border-r border-blue-900">
       <div>
-        <div class="p-6 border-b border-blue-900">
-          <h2 id="sidebarPortalTitle" class="font-bold text-lg text-white">ACLC Mandaue</h2>
-          <p id="sidebarRoleLabel" class="text-xs text-blue-300">Role: Portal</p>
+        <div class="p-6 border-b border-blue-900 flex items-center space-x-3">
+          <!-- Logo in Sidebar Upper-Left Header -->
+          <img src="logo.png" alt="Logo" class="w-10 h-10 rounded-full bg-white object-contain p-0.5 border border-blue-700 shadow-sm">
+          <div>
+            <h2 id="sidebarPortalTitle" class="font-bold text-sm text-white leading-tight">ACLC Mandaue</h2>
+            <p id="sidebarRoleLabel" class="text-[10px] text-red-400 font-semibold uppercase tracking-wider">Role: Portal</p>
+          </div>
         </div>
         <nav class="mt-4 px-2 space-y-1">
           <button onclick="switchPage('overview')" id="navOverview" class="w-full text-left flex items-center px-4 py-2.5 bg-blue-900 rounded-lg text-sm font-medium transition">Dashboard Overview</button>
-          <button onclick="switchPage('directory')" id="navDirectory" class="w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-900 rounded-lg text-sm font-medium text-blue-200 transition">Directory & Records</button>
+          <button onclick="switchPage('directory')" id="navDirectory" class="w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-950 rounded-lg text-sm font-medium text-blue-200 transition">Directory & Records</button>
         </nav>
       </div>
       <div class="p-4 border-t border-blue-900">
-        <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-300 hover:bg-blue-900 rounded-lg transition">
+        <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-300 hover:bg-blue-900 rounded-lg transition font-medium">
           Sign Out
         </button>
       </div>
@@ -67,12 +84,15 @@
     <div class="flex-1 flex flex-col overflow-y-auto">
       
       <!-- Top Navbar -->
-      <header class="bg-white border-b px-6 py-4 flex justify-between items-center">
-        <div>
-          <h2 id="pageTitle" class="text-xl font-bold text-gray-800">Dashboard</h2>
-          <p class="text-xs text-gray-500">Welcome back, <span id="userNameDisplay">User</span></p>
+      <header class="bg-white border-b px-6 py-4 flex justify-between items-center shadow-xs">
+        <div class="flex items-center space-x-3">
+          <img src="logo.png" alt="Logo" class="w-9 h-9 rounded-full md:hidden border border-blue-800 object-contain p-0.5">
+          <div>
+            <h2 id="pageTitle" class="text-xl font-bold text-gray-800">Dashboard</h2>
+            <p class="text-xs text-gray-500">Welcome back, <span id="userNameDisplay" class="font-semibold text-blue-900">User</span></p>
+          </div>
         </div>
-        <button onclick="logout()" class="md:hidden bg-red-600 text-white px-3 py-1.5 rounded text-xs">Logout</button>
+        <button onclick="logout()" class="md:hidden bg-red-600 text-white px-3 py-1.5 rounded text-xs font-semibold">Logout</button>
       </header>
 
       <!-- Main Dynamic Content Views -->
@@ -81,22 +101,22 @@
         <!-- ================= PAGE 1: OVERVIEW VIEW ================= -->
         <div id="viewOverview" class="space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-              <h4 class="text-xs font-semibold text-gray-400 uppercase">Total Profiles</h4>
-              <p id="statTotalCount" class="text-2xl font-bold text-blue-900 mt-1">0</p>
+            <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 border-l-4 border-l-blue-900">
+              <h4 class="text-xs font-bold text-gray-400 uppercase">Total Profiles</h4>
+              <p id="statTotalCount" class="text-2xl font-black text-blue-900 mt-1">0</p>
             </div>
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-              <h4 class="text-xs font-semibold text-gray-400 uppercase">Active Portal</h4>
-              <p id="statActiveRole" class="text-2xl font-bold text-green-700 mt-1">Portal</p>
+            <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 border-l-4 border-l-red-600">
+              <h4 class="text-xs font-bold text-gray-400 uppercase">Active Portal</h4>
+              <p id="statActiveRole" class="text-2xl font-black text-red-600 mt-1">Portal</p>
             </div>
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-              <h4 class="text-xs font-semibold text-gray-400 uppercase">System Status</h4>
-              <p class="text-2xl font-bold text-emerald-600 mt-1">Online</p>
+            <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 border-l-4 border-l-emerald-600">
+              <h4 class="text-xs font-bold text-gray-400 uppercase">System Status</h4>
+              <p class="text-2xl font-black text-emerald-600 mt-1">Online</p>
             </div>
           </div>
 
           <!-- Role Breakdown Analytics -->
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-5">
+          <div class="bg-white p-6 rounded-xl shadow-xs border border-slate-200 space-y-5">
             <div>
               <h3 class="text-md font-bold text-gray-800">Database Role Population Analytics</h3>
               <p class="text-xs text-gray-500">Count of registered students, faculty members, and admin staff</p>
@@ -136,7 +156,7 @@
           </div>
 
           <!-- Student Year Level Analytics with Visual Bars -->
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-5">
+          <div class="bg-white p-6 rounded-xl shadow-xs border border-slate-200 space-y-5">
             <div>
               <h3 class="text-md font-bold text-gray-800">Student Year Level Analytics</h3>
               <p class="text-xs text-gray-500">Real-time population breakdown across academic year levels</p>
@@ -179,17 +199,17 @@
                   <span id="countYear4">0</span>
                 </div>
                 <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                  <div id="barYear4" class="bg-purple-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                  <div id="barYear4" class="bg-red-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+          <div class="bg-white p-8 rounded-xl shadow-xs border border-slate-200 flex flex-col items-start">
             <h3 id="welcomeHeader" class="text-lg font-bold text-gray-800 mb-2">Welcome to the Portal</h3>
-            <p class="text-sm text-gray-600">Use the sidebar navigation to view and manage institutional database entries, browse student & staff records, or register new credentials.</p>
-            <div class="mt-6 flex gap-3">
-              <button onclick="switchPage('directory')" class="bg-blue-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">Go to Directory & Records</button>
+            <p class="text-sm text-gray-600">Use the sidebar navigation to view and manage institutional database entries, browse student & staff records, or register new credentials in real-time.</p>
+            <div class="mt-6">
+              <button onclick="switchPage('directory')" class="bg-blue-900 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-800 transition">Go to Directory & Records</button>
             </div>
           </div>
         </div>
@@ -197,16 +217,16 @@
         <!-- ================= PAGE 2: DIRECTORY & RECORDS VIEW ================= -->
         <div id="viewDirectory" class="hidden space-y-6">
           <!-- Add New Record Form -->
-          <div id="adminFormContainer" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+          <div id="adminFormContainer" class="bg-white p-6 rounded-xl shadow-xs border border-slate-200">
             <h3 class="font-bold text-gray-800 mb-4">Register / Add New Directory Record</h3>
             <form id="profileForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <label class="block text-xs font-medium text-gray-600">Full Name</label>
-                <input type="text" id="fullName" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="TESTING">
+                <input type="text" id="fullName" required class="w-full mt-1 border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-700 outline-none" placeholder="TESTING">
               </div>
               <div>
                 <label class="block text-xs font-medium text-gray-600">Role</label>
-                <select id="role" class="w-full mt-1 border rounded-lg p-2 text-sm">
+                <select id="role" class="w-full mt-1 border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-700 outline-none">
                   <option value="Student">Student</option>
                   <option value="Faculty">Faculty</option>
                   <option value="Admin">Admin</option>
@@ -214,14 +234,14 @@
               </div>
               <div>
                 <label class="block text-xs font-medium text-gray-600">ID / Number</label>
-                <input type="text" id="identifier" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="2026-0002">
+                <input type="text" id="identifier" required class="w-full mt-1 border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-700 outline-none" placeholder="2026-0002">
               </div>
               <div>
                 <label class="block text-xs font-medium text-gray-600">Details / Course / Dept</label>
-                <input type="text" id="details" required class="w-full mt-1 border rounded-lg p-2 text-sm" placeholder="BSIT - 3rd Year">
+                <input type="text" id="details" required class="w-full mt-1 border rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-700 outline-none" placeholder="BSIT - 3rd Year">
               </div>
               <div class="md:col-span-4 flex justify-end">
-                <button type="submit" class="bg-blue-900 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">
+                <button type="submit" class="bg-blue-900 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-800 transition shadow-sm">
                   Save to Database
                 </button>
               </div>
@@ -229,10 +249,10 @@
           </div>
 
           <!-- Data Table Page -->
-          <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+          <div class="bg-white rounded-xl shadow-xs border border-slate-200 overflow-hidden">
             <div class="px-6 py-4 border-b flex justify-between items-center bg-slate-50">
               <h3 class="font-bold text-gray-800">Institutional Directory Records</h3>
-              <input type="text" id="searchInput" placeholder="Search records..." class="border rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-blue-800 bg-white" onkeyup="filterTable()">
+              <input type="text" id="searchInput" placeholder="Search records..." class="border rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-blue-700 bg-white" onkeyup="filterTable()">
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse text-sm">
@@ -258,6 +278,14 @@
 <script>
   let currentUser = null;
   let allProfiles = [];
+
+  const socket = io();
+
+  socket.on('profileUpdate', (updatedProfiles) => {
+    allProfiles = updatedProfiles;
+    renderTable(allProfiles);
+    updateAnalytics(allProfiles);
+  });
 
   window.addEventListener('DOMContentLoaded', () => {
     const savedUser = localStorage.getItem('simsUser');
@@ -329,12 +357,12 @@
       overviewView.classList.remove('hidden');
       directoryView.classList.add('hidden');
       navOverview.className = "w-full text-left flex items-center px-4 py-2.5 bg-blue-900 rounded-lg text-sm font-medium transition text-white";
-      navDirectory.className = "w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-900 rounded-lg text-sm font-medium text-blue-200 transition";
+      navDirectory.className = "w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-950 rounded-lg text-sm font-medium text-blue-200 transition";
     } else if (page === 'directory') {
       overviewView.classList.add('hidden');
       directoryView.classList.remove('hidden');
       navDirectory.className = "w-full text-left flex items-center px-4 py-2.5 bg-blue-900 rounded-lg text-sm font-medium transition text-white";
-      navOverview.className = "w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-900 rounded-lg text-sm font-medium text-blue-200 transition";
+      navOverview.className = "w-full text-left flex items-center px-4 py-2.5 hover:bg-blue-950 rounded-lg text-sm font-medium text-blue-200 transition";
     }
   }
 
@@ -386,7 +414,6 @@
       }
     });
 
-    // Update Role Breakdown Counters & Bars
     document.getElementById('countStudents').innerText = studentCount;
     document.getElementById('countFaculty').innerText = facultyCount;
     document.getElementById('countAdmin').innerText = adminCount;
@@ -396,7 +423,6 @@
     document.getElementById('barFaculty').style.width = `${(facultyCount / total) * 100}%`;
     document.getElementById('barAdmin').style.width = `${(adminCount / total) * 100}%`;
 
-    // Update Year Level Counters & Bars
     document.getElementById('countYear1').innerText = y1;
     document.getElementById('countYear2').innerText = y2;
     document.getElementById('countYear3').innerText = y3;
@@ -421,11 +447,11 @@
 
     list.forEach(p => {
       const deleteBtn = currentUser && currentUser.role === 'Admin'
-        ? `<button onclick="deleteProfile(${p.id})" class="text-red-600 hover:underline text-xs">Delete</button>`
+        ? `<button onclick="deleteProfile(${p.id})" class="text-red-600 hover:underline font-semibold text-xs">Delete</button>`
         : `<span class="text-gray-300 text-xs">-</span>`;
 
       tbody.innerHTML += `
-        <tr class="hover:bg-slate-50">
+        <tr class="hover:bg-slate-50 transition">
           <td class="p-4 font-medium text-gray-800">${p.fullName}</td>
           <td class="p-4">
             <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${
@@ -466,12 +492,10 @@
     });
 
     document.getElementById('profileForm').reset();
-    loadProfiles();
   });
 
   async function deleteProfile(id) {
     await fetch(`/api/profiles/${id}`, { method: 'DELETE' });
-    loadProfiles();
   }
 </script>
 </body>

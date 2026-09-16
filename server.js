@@ -13,7 +13,7 @@ app.use(express.static(__dirname));
 function readDB() {
   if (!fs.existsSync(DB_FILE)) {
     const initialData = [
-      { id: 1, fullName: 'Juan Dela Cruz', role: 'Student', identifier: '2026-0001', details: 'BSIT - 3rd Year' }
+      { id: 1, fullName: 'TESTING', role: 'Student', identifier: '2026-0001', details: 'BSIT - 3rd Year' }
     ];
     fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2));
   }
